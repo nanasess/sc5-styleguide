@@ -2,6 +2,7 @@ var gulp = require('gulp'),
   styleguide = require('./lib/styleguide'),
   postcss = require('gulp-postcss'),
   rename = require('gulp-rename'),
+  { series, parallel, watch } = require('gulp'), // Added
   source = 'lib/app/css/*.css',
   outputPath = 'demo-output';
 
@@ -45,14 +46,17 @@ gulp.task('styleguide:applystyles', function() {
     .pipe(gulp.dest(outputPath));
 });
 
-gulp.task('styleguide', ['styleguide:static', 'styleguide:generate', 'styleguide:applystyles']);
-
 gulp.task('styleguide:static', function() {
   gulp.src(['lib/demo/**'])
     .pipe(gulp.dest(outputPath + '/demo'));
 });
 
-gulp.task('watch', ['styleguide'], function() {
+// Define styleguide task using parallel
+const styleguideTask = parallel('styleguide:static', 'styleguide:generate', 'styleguide:applystyles');
+gulp.task('styleguide', styleguideTask);
+
+
+gulp.task('watch', series(styleguideTask, function watchFiles() { // Use series and named function
   // Start watching changes and update styleguide whenever changes are detected
-  gulp.watch(source, ['styleguide']);
-});
+  watch(source, styleguideTask); // Use the defined parallel task
+}));

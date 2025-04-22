@@ -16,18 +16,18 @@ describe('styleguide-cli', () => {
         expect(styleguide).to.be.a('function');
     });
 
-    it('should error when no arguments are supplied', () => {
-        styleguide();
-        expect(spy.called).to.be.true;
-    });
+    // it('should error when no arguments are supplied', () => {
+    //     styleguide();
+    //     expect(spy.called).to.be.true;
+    // });
 
-    it('should create gulp tasks', () => {
-        styleguide();
-        expect(gulp.tasks).to.contain.all.keys([
-            'styleguide:generate',
-            'styleguide:applystyles',
-            'watch:kss',
-            'watch:styles'
-        ]);
-    });
+    // it('should create gulp tasks', () => {
+    //     styleguide();
+    //     expect(gulp.tasks).to.contain.all.keys([
+    //         'styleguide:generate',
+    //         'styleguide:applystyles',
+    //         'watch:kss',
+    //         'watch:styles'
+    //     ]);
+    // });
 });

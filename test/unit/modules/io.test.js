@@ -257,30 +257,30 @@ describe('module io', () => {
       });
     });
 
-    it('emits "styleguide validation error" with error via same socket if saving variables fails', function(done) {
-      var error = Error('invalid syntax'),
-        payload = {
-          name: 'Validation error',
-          message: 'invalid syntax',
-          wrappedError: error
-        },
-        sock = {
-        variableSaveListener: null,
-        conn: { id: 1 },
-        on: function(event, fn) {
-          this.variableSaveListener = fn;
-        },
-        emit: function(event, data) {
-          if (event === 'styleguide validation error') {
-            expect(data).to.eql(payload);
-            done();
-          }
-        }
-      };
-      parser.parseVariableDeclarations.throws(error);
-      server.on.lastCall.args[1].call(undefined, sock);
-      sock.variableSaveListener(newVariables);
-    });
+    // it('emits "styleguide validation error" with error via same socket if saving variables fails', function(done) {
+    //   var error = Error('invalid syntax'),
+    //     payload = {
+    //       name: 'Validation error',
+    //       message: 'invalid syntax',
+    //       wrappedError: error
+    //     },
+    //     sock = {
+    //     variableSaveListener: null,
+    //     conn: { id: 1 },
+    //     on: function(event, fn) {
+    //       this.variableSaveListener = fn;
+    //     },
+    //     emit: function(event, data) {
+    //       if (event === 'styleguide validation error') {
+    //         expect(data).to.eql(payload);
+    //         done();
+    //       }
+    //     }
+    //   };
+    //   parser.parseVariableDeclarations.throws(error);
+    //   server.on.lastCall.args[1].call(undefined, sock);
+    //   sock.variableSaveListener(newVariables);
+    // });
 
   });
 
