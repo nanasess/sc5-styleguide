@@ -1,3 +1,4 @@
+require('@babel/register');
 var gulp = require('gulp'),
     gutil = require('gulp-util'),
     concat = require('gulp-concat'),
@@ -10,7 +11,7 @@ var gulp = require('gulp'),
     mainBowerFiles = require('main-bower-files'),
     ngAnnotate = require('gulp-ng-annotate'),
     replace = require('gulp-replace'),
-    runSequence = require('run-sequence'),
+    { series, parallel, watch } = require('gulp'),
     toc = require('gulp-doctoc'),
     styleguide = require('./lib/styleguide'),
     postcss = require('gulp-postcss'),
@@ -22,8 +23,13 @@ var gulp = require('gulp'),
     outputPath = 'demo-output',
     webserver = require('gulp-webserver');
 
-require('./gulpfile-tests.babel')(gulp);
-gulp.task('js:app', () => {
+// Import test tasks and get the lint:js task if available
+const testTasks = require('./gulpfile-tests.babel')(gulp);
+const lintJsTask = testTasks && testTasks['lint:js'] ? testTasks['lint:js'] : (cb) => { console.warn('lint:js task not found'); cb(); };
+
+// --- Define tasks as named functions ---
+
+function jsApp() {
   return gulp.src([
     'lib/app/js/app.js',
     'lib/app/js/controllers/*.js',
@@ -34,53 +40,53 @@ gulp.task('js:app', () => {
   .pipe(ngAnnotate())
   .pipe(concat('app.js'))
   .pipe(gulp.dest(distPath + '/js'));
-});
+}
 
-gulp.task('js:vendor', ['bower'], () => {
-  return gulp.src(['lib/app/js/vendor/**/*.js'].concat(mainBowerFiles({filter: /\.js/})))
+function bowerTask() { // Renamed from 'bower' to avoid conflict with the required module
+  return bower();
+}
+
+function jsVendor() {
+  return gulp.src(['lib/app/js/vendor/**/*.js'].concat(mainBowerFiles({filter: /\.js/}))) // Removed gulp.series wrapper
     .pipe(plumber())
     .pipe(concat('vendor.js'))
     .pipe(gulp.dest(distPath + '/js'));
-});
+}
 
-gulp.task('bower', () => {
-  return bower();
-});
-
-gulp.task('copy:css', () => {
+function copyCss() {
   return gulp.src('lib/app/css/**/*')
     .pipe(gulp.dest(distPath + '/css'));
-});
+}
 
-gulp.task('html', () => {
+function copyHtml() { // Renamed from 'html'
   return gulp.src('lib/app/**/*.html')
     .pipe(gulp.dest(distPath + '/'));
-});
+}
 
-gulp.task('assets', () => {
+function copyAssets() { // Renamed from 'assets'
   return gulp.src('lib/app/assets/**')
     .pipe(gulp.dest(distPath + '/assets'));
-});
+}
 
-gulp.task('clean:dist', function () {
-  return gulp.src(distPath, {read: false})
+function cleanDist() {
+  return gulp.src(distPath, {read: false, allowEmpty: true}) // Added allowEmpty: true
     .pipe(rimraf());
-});
+}
 
 // Copy test directives to output even when running gulp dev
-gulp.task('dev:static', () => {
-  gulp.src(['lib/demo/**'])
+function devStatic() {
+  return gulp.src(['lib/demo/**']) // Added return
     .pipe(gulp.dest(outputPath + '/demo'));
-});
+}
 
-gulp.task('dev:doc', () => {
+function devDoc() {
   return gulp.src('README.md')
     .pipe(toc())
     .pipe(replace(/[^\n]*Table of Contents[^\n]*\n/g, ''))
     .pipe(gulp.dest('./'));
-});
+}
 
-gulp.task('dev:generate', () => {
+function devGenerate() {
   return gulp.src([distPath + '/css/*.css'])
     .pipe(styleguide.generate({
       title: 'SC5 Styleguide',
@@ -97,14 +103,14 @@ gulp.task('dev:generate', () => {
       }
     }))
     .pipe(gulp.dest(outputPath));
-});
+}
 
-gulp.task('dev:applystyles', () => {
+function devApplystyles(cb) { // Added cb for async completion
   if (!fs.existsSync(distPath) || !fs.existsSync(distPath + '/css/styleguide-app.css')) {
     process.stderr.write(chalk.red.bold('Error:') + ' Directory ' + distPath + ' does not exist. You probably installed library by cloning repository directly instead of NPM repository.\n');
     process.stderr.write('You need to run ' + chalk.green.bold('gulp build') + ' first\n');
-    process.exit(1);
-    return 1;
+    // process.exit(1); // Avoid exiting, let Gulp handle error
+    return cb(new Error(distPath + ' does not exist. Run `gulp build` first.')); // Signal error
   }
   return gulp.src(distPath + '/css/styleguide-app.css')
     .pipe(replace('{{{appRoot}}}', ''))
@@ -126,30 +132,9 @@ gulp.task('dev:applystyles', () => {
     }))
     .pipe(styleguide.applyStyles())
     .pipe(gulp.dest(outputPath));
-});
+}
 
-gulp.task('dev', ['dev:doc', 'dev:static', 'build:dist'], () => {
-  //Do intial full build and create styleguide
-  runSequence('dev:generate', 'dev:applystyles');
-
-  gulp.watch('lib/app/css/**/*.css', () => {
-    runSequence('copy:css', 'dev:generate', 'dev:applystyles');
-  });
-  gulp.watch(['lib/app/js/**/*.js', 'lib/app/views/**/*', 'lib/app/index.html', '!lib/app/js/vendor/**/*.js'], () => {
-    gulp.start('lint:js');
-    runSequence('js:app', 'dev:generate');
-  });
-  gulp.watch('lib/app/js/vendor/**/*.js', () => {
-    runSequence('js:vendor', 'dev:generate');
-  });
-  gulp.watch('lib/app/**/*.html', () => {
-    runSequence('html', 'dev:generate');
-  });
-  gulp.watch('README.md', ['dev:doc', 'dev:generate']);
-  gulp.watch('lib/styleguide.js', ['dev:generate']);
-});
-
-gulp.task('addsection', () => {
+function addSection() {
   return gulp.src(['lib/app/css/**/*.css'])
     .pipe(styleguide.addSection({
       parsers: {
@@ -157,39 +142,38 @@ gulp.task('addsection', () => {
       }
     }))
     .pipe(gulp.dest('lib/app/css/'));
-});
+}
 
-gulp.task('build:dist', ['copy:css', 'js:app', 'js:vendor', 'html', 'assets']);
-
-gulp.task('build', ['clean:dist'], () => {
-  runSequence('build:dist');
-});
-
-gulp.task('changelog', () => {
+function changelog(cb) {
 
   require('conventional-changelog')({
     repository: 'https://github.com/SC5/sc5-styleguide',
     version: require('./package.json').version,
     file: ''
   }, (err, log) => {
+    if (err) {
+      console.error(err);
+      return cb(err);
+    }
     fs.writeFile('./CHANGELOG_LATEST.md', log, (err) => {
       if (err) {
-        console.log(err);
-
-      } else {
-        console.log('The latest changelog was updated\n\n');
-        console.log(log);
+        console.error(err);
+        return cb(err);
       }
+      console.log('The latest changelog was updated\n\n');
+      console.log(log);
+      cb();
     });
   });
 
-});
+}
 
-gulp.task('friday', function() {
+function friday(cb) {
   var today = new Date();
   // For fridays only
   if (today.getDay() !== 5) {
-      return;
+      console.log('Not Friday, skipping Friday message.');
+      return cb(); // Important to call cb()
   }
   gutil.log(gutil.colors.magenta('┓┏┓┏┓┃'));
   gutil.log(gutil.colors.magenta('┛┗┛┗┛┃'), gutil.colors.cyan('⟍ ○⟋'));
@@ -202,40 +186,82 @@ gulp.task('friday', function() {
   gutil.log(gutil.colors.magenta('┓┏┓┏┓┃'), '          ', 'luck!');
   gutil.log(gutil.colors.magenta('┃┃┃┃┃┃'));
   gutil.log(gutil.colors.magenta('┻┻┻┻┻┻'));
-});
+  cb();
+}
 
-gulp.task('publish', ['friday', 'build', 'changelog']);
+function websiteCss() {
+  return gulp.src(siteDir + 'css/*.css') // Return the stream
+    .pipe(gulpIgnore.exclude('*.min.css'))
+    .pipe(cssmin())
+    .pipe(rename({suffix: '.min'}))
+    .pipe(gulp.dest(siteDir + 'css'));
+}
 
-var siteDir = './site/';
+function websiteServer() {
+  watch(siteDir + 'css/app.css', websiteCss); // Use function reference
 
-gulp.task('website', ['website:css'], function() {
-  gulp.watch(siteDir + 'css/app.css', ['website:css']);
-
-  gulp.src(siteDir)
+  return gulp.src(siteDir)
     .pipe(webserver({
       livereload: true,
       directoryListing: false,
       open: true
     }));
-});
+}
 
-gulp.task('website:css', ()=> {
-  gulp.src(siteDir + 'css/*.css')
-    .pipe(gulpIgnore.exclude('*.min.css'))
-    .pipe(cssmin())
-    .pipe(rename({suffix: '.min'}))
-    .pipe(gulp.dest(siteDir + 'css'));
-});
+function websiteDeployClean() {
+  return gulp.src('.publish', { read: false, allowEmpty: true }) // Added allowEmpty: true
+    .pipe(clean());
+}
 
-gulp.task('website:deploy', ['website:deploy:clean'], () => {
-  gulp.src(siteDir + '**/*')
+function websiteDeploy() {
+  return gulp.src(siteDir + '**/*')
     .pipe(ghPages({
       remoteUrl: 'git@github.com:SC5/sc5-styleguide.git'
     }));
+}
 
-});
+// --- Combine tasks using series and parallel ---
 
-gulp.task('website:deploy:clean', () => {
-  gulp.src('.publish', { read: false })
-    .pipe(clean());
-});
+const buildDist = parallel(copyCss, jsApp, series(bowerTask, jsVendor), copyHtml, copyAssets); // Use function references and series for jsVendor dependency
+const build = series(cleanDist, buildDist);
+
+function devWatch() { // Define watch part as a separate function
+  watch('lib/app/css/**/*.css', series(copyCss, devGenerate, devApplystyles));
+  watch(['lib/app/js/**/*.js', 'lib/app/views/**/*', 'lib/app/index.html', '!lib/app/js/vendor/**/*.js'], series(lintJsTask, jsApp, devGenerate));
+  watch('lib/app/js/vendor/**/*.js', series(bowerTask, jsVendor, devGenerate)); // Added bowerTask dependency
+  watch('lib/app/**/*.html', series(copyHtml, devGenerate));
+  watch('README.md', series(devDoc, devGenerate));
+  watch('lib/styleguide.js', devGenerate); // No need for series for single task
+}
+
+const dev = series(devDoc, devStatic, build, series(devGenerate, devApplystyles), devWatch);
+const publish = series(friday, build, changelog);
+const website = series(websiteCss, websiteServer);
+const deploy = series(websiteDeployClean, websiteDeploy); // Renamed from website:deploy
+
+// --- Register tasks with Gulp ---
+
+gulp.task('js:app', jsApp);
+gulp.task('bower', bowerTask);
+gulp.task('js:vendor', series(bowerTask, jsVendor)); // Explicitly define series here too
+gulp.task('copy:css', copyCss);
+gulp.task('html', copyHtml);
+gulp.task('assets', copyAssets);
+gulp.task('clean:dist', cleanDist);
+gulp.task('dev:static', devStatic);
+gulp.task('dev:doc', devDoc);
+gulp.task('dev:generate', devGenerate);
+gulp.task('dev:applystyles', devApplystyles);
+gulp.task('build:dist', buildDist);
+gulp.task('build', build);
+gulp.task('dev', dev);
+gulp.task('addsection', addSection);
+gulp.task('changelog', changelog);
+gulp.task('friday', friday);
+gulp.task('publish', publish);
+gulp.task('website:css', websiteCss);
+gulp.task('website', website);
+gulp.task('website:deploy:clean', websiteDeployClean);
+gulp.task('website:deploy', deploy);
+
+// Export default task if needed, e.g., gulp.task('default', build);

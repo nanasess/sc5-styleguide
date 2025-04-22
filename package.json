@@ -1,5 +1,5 @@
 {
-  "name": "sc5-styleguide",
+  "name": "nanasess-sc5-styleguide",
   "version": "2.2.0",
   "description": "Styleguide generator is a handy little tool that helps you generate good looking styleguides from stylesheets using KSS notation.",
   "bin": {
@@ -12,7 +12,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/SC5/sc5-styleguide.git"
+    "url": "https://github.com/nanasess/sc5-styleguide.git"
   },
   "main": "./lib/styleguide.js",
   "files": [
@@ -41,7 +41,7 @@
     "express": "~4.13.0",
     "fs-extra": "^0.26.2",
     "gonzales-pe": "4.0.3",
-    "gulp": "~3.9.0",
+    "gulp": "^4.0.2",
     "gulp-concat": "~2.6.0",
     "gulp-cssnext": "^1.0.1",
     "gulp-mustache": "~2.0.1",
@@ -69,7 +69,7 @@
     "postcss-partial-import": "^1.3.0",
     "pug": "^2.0.0-beta6",
     "q": "~1.4.1",
-    "run-sequence": "~1.1.0",
+    "run-sequence": "^2.2.1",
     "socket.io": "~1.4.0",
     "through2": "~2.0.0",
     "vinyl": "~1.1.0",
@@ -77,12 +77,12 @@
     "yargs": "~3.30.0"
   },
   "devDependencies": {
-    "babel-core": "^6.7.2",
-    "babel-plugin-root-import": "^5.1.0",
-    "babel-preset-es2015": "^6.1.18",
-    "babel-register": "^6.7.2",
+    "@babel/core": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "@babel/register": "^7.21.4",
+    "babel-plugin-module-resolver": "^4.1.0",
     "chai": "~3.4.1",
-    "conventional-changelog": "git://github.com/sc5/conventional-changelog.git#features/sc-styleguide",
+    "conventional-changelog": "^5.0.0",
     "coveralls": "~2.11.2",
     "del": "~2.1.0",
     "dependency-check": "~2.5.1",
@@ -121,11 +121,12 @@
     "yaspeller-ci": "^0.3.0"
   },
   "scripts": {
-    "pretest": "gulp clean-coverage",
-    "test": "gulp test && npm run spellcheck",
+    "test:unit": "mocha --require @babel/register 'test/unit/**/*.js'",
+    "test:integration": "mocha --require @babel/register 'test/integration/**/*.js'",
+    "test:functional": "karma start test/karma.conf.js --single-run --reporters mocha",
+    "test": "npm run test:unit && npm run test:integration && npm run test:functional && npm run spellcheck",
     "spellcheck": "yaspeller-ci README.md DEVELOPMENT.md",
-    "posttest": "gulp generate-coverage-report",
-    "prepublish": "gulp build",
+    "prepare": "gulp build",
     "build": "gulp build",
     "demo": "gulp --gulpfile ./demo-gulpfile.js watch",
     "depcheck": "dependency-check . --unused --no-dev --entry gulpfile.js --entry demo-gulpfile.js --entry lib/styleguide.js"

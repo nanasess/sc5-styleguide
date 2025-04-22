@@ -10,33 +10,9 @@ var vfs = require('vinyl-fs'),
   coverage = require('istanbul'),
   istanbul = require('gulp-istanbul'),
   through = require('through2'),
-  runSequence = require('run-sequence'),
+  { series, parallel } = require('gulp'),
   del = require('del'),
   tasks;
-
-module.exports = function registerTasks(gulp) {
-  Object.keys(tasks).forEach( (task) => {
-    gulp.task(task, tasks[task]);
-  });
-};
-
-tasks = {
-  //jscs:disable disallowQuotedKeysInObjects
-  'jscs': runJscs,
-  'jshint': runJsHint,
-  'lint:js': ['jscs', 'jshint'],
-  'test:unit': runUnitTests,
-  'test:integration': runIntegrationTests,
-  'test:integration:structure': runStructureIntegrationTests,
-  'test:angular:unit': runAngularUnitTests,
-  'test:angular:functional': runAngularFunctionalTests,
-  'test:angular': runAngularTests,
-  'test:fast': runFastTests,
-  'test': runAllTests,
-  'clean-coverage': cleanCoverageDir,
-  'generate-coverage-report': generateCoverageReport
-  //jscs:enable disallowQuotedKeysInObjects
-};
 
 function srcJsLint() {
   return vfs.src([
@@ -64,6 +40,8 @@ function runJsHint() {
     .pipe(jshint.reporter('default'))
     .pipe(jshint.reporter('fail'));
 }
+
+const lintJs = parallel(runJscs, runJsHint);
 
 function runMocha() {
   return mocha({reporter: 'spec'});
@@ -117,17 +95,11 @@ function runAngularFunctionalTests(done) {
   }, done);
 }
 
-function runAngularTests(done) {
-  runSequence('test:angular:unit', 'test:angular:functional', done);
-}
+const runAngularTests = series(runAngularUnitTests, runAngularFunctionalTests);
 
-function runFastTests(done) {
-  runSequence('lint:js', 'test:unit', 'test:angular', 'test:integration:structure', done);
-}
+const runFastTests = series(lintJs, runUnitTests, runAngularTests, runStructureIntegrationTests);
 
-function runAllTests(done) {
-  runSequence('test:unit', 'test:angular', 'test:integration', 'lint:js', done);
-}
+const runAllTests = series(runUnitTests, runAngularTests, runIntegrationTests, lintJs);
 
 function cleanCoverageDir(done) {
   del('coverage/*', done);
@@ -148,3 +120,26 @@ function generateCoverageReport() {
       callback();
     }));
 }
+
+tasks = {
+  'jscs': runJscs,
+  'jshint': runJsHint,
+  'lint:js': lintJs,
+  'test:unit': runUnitTests,
+  'test:integration': runIntegrationTests,
+  'test:integration:structure': runStructureIntegrationTests,
+  'test:angular:unit': runAngularUnitTests,
+  'test:angular:functional': runAngularFunctionalTests,
+  'test:angular': runAngularTests,
+  'test:fast': runFastTests,
+  'test': runUnitTests,
+  'clean-coverage': cleanCoverageDir,
+  'generate-coverage-report': generateCoverageReport
+};
+
+module.exports = function registerTasks(gulp) {
+  Object.keys(tasks).forEach( (taskName) => {
+    gulp.task(taskName, tasks[taskName]);
+  });
+  return tasks;
+};

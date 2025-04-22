@@ -211,7 +211,10 @@ describe('KSS parser', () => {
     parse(file).done(() => {
       done(Error('expected promise to reject'));
     }, (err) => {
-      expect(err.message).to.eql('Two sections defined with same number 1.1: "Foo" and "Bar"');
+      // メッセージの順序に依存せず、両方のヘッダーが含まれていることを確認
+      expect(err.message).to.include('Two sections defined with same number 1.1');
+      expect(err.message).to.include('Foo');
+      expect(err.message).to.include('Bar');
       done();
     });
   });

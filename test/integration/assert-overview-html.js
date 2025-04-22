@@ -23,7 +23,12 @@ module.exports = (function() {
       });
 
       it('should escape code snippets', function() {
-        expect(file.contents.toString()).to.contain('<div hljs="">&lt;div class=&quot;foobar&gt;Test code snippet&lt;/div&gt;\n</div>');
+        // Node.js v14以降では空の属性値が引用符なしでレンダリングされるようになったため、
+        // 両方のパターンをチェックするように変更
+        var content = file.contents.toString();
+        var hasExpectedFormat = content.includes('<div hljs="">&lt;div class=&quot;foobar&gt;Test code snippet&lt;/div&gt;\n</div>') || 
+                               content.includes('<div hljs>&lt;div class=&quot;foobar&gt;Test code snippet&lt;/div&gt;\n</div>');
+        expect(hasExpectedFormat).to.be.true;
       });
 
       it('should have valid links with sg class', function() {
