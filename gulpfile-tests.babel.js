@@ -6,7 +6,6 @@ var vfs = require('vinyl-fs'),
   jscs = require('gulp-jscs'),
   jshint = require('gulp-jshint'),
   mocha = require('gulp-mocha'),
-  karma = require('karma').server,
   coverage = require('istanbul'),
   istanbul = require('gulp-istanbul'),
   through = require('through2'),
@@ -79,27 +78,11 @@ function runIntegrationTests() {
   return vfs.src('test/integration/**/*.js').pipe(runMocha());
 }
 
-function runAngularUnitTests(done) {
-  karma.start({
-    configFile: path.resolve('./test/karma.conf.js'),
-    exclude: ['test/angular/functional/**/*.js']
-  }, done);
-}
+// Angular関連のテストは削除されました
 
-function runAngularFunctionalTests(done) {
-  karma.start({
-    configFile: path.resolve('./test/karma.conf.js'),
-    exclude: ['test/angular/unit/**/*.js'],
-    preprocessors: {},
-    reporters: ['mocha']
-  }, done);
-}
+const runFastTests = series(lintJs, runUnitTests, runStructureIntegrationTests);
 
-const runAngularTests = series(runAngularUnitTests, runAngularFunctionalTests);
-
-const runFastTests = series(lintJs, runUnitTests, runAngularTests, runStructureIntegrationTests);
-
-const runAllTests = series(runUnitTests, runAngularTests, runIntegrationTests, lintJs);
+const runAllTests = series(runUnitTests, runIntegrationTests, lintJs);
 
 function cleanCoverageDir(done) {
   del('coverage/*', done);
@@ -128,11 +111,8 @@ tasks = {
   'test:unit': runUnitTests,
   'test:integration': runIntegrationTests,
   'test:integration:structure': runStructureIntegrationTests,
-  'test:angular:unit': runAngularUnitTests,
-  'test:angular:functional': runAngularFunctionalTests,
-  'test:angular': runAngularTests,
   'test:fast': runFastTests,
-  'test': runUnitTests,
+  'test': runAllTests,
   'clean-coverage': cleanCoverageDir,
   'generate-coverage-report': generateCoverageReport
 };
