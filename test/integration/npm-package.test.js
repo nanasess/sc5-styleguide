@@ -14,7 +14,6 @@ var fs = require('fs'),
   styleGuideDir = path.resolve(currentDir, '../../'),
   testDir = path.join(tmp, 'sc5-package-smoketest' + Date.now()),
   sharedSrc = path.resolve(currentDir, '../projects/shared-css/*.css'),
-  // Correct the path to match the actual installed directory name
   npmSgDir = path.join(testDir, 'node_modules/nanasess-sc5-styleguide'),
   MINUTE = 60000;
 
@@ -123,43 +122,13 @@ function prepareTestDir() {
 
 function runNpmInstall() {
   console.log(chalk.yellow('\n  Installing npm module to temp dir from', styleGuideDir));
-  var args = ['install', styleGuideDir, '--color', 'false'], // Remove spin, set color false for cleaner logs
+  var args = ['install', styleGuideDir, '--color', 'true', '--spin', 'true'],
     opts = {
       cwd: testDir,
       env: process.env,
-      stdio: 'pipe' // Change from 'inherit' to 'pipe' to capture output/error
+      stdio: 'inherit'
     };
-  console.log(`Running command: npm ${args.join(' ')} in ${testDir}`); // Add logging
-  return spawn('npm', args, opts)
-    .then(function() {
-      console.log('npm install potentially completed (check output/error in spawn).');
-      // Add a check here immediately after install
-      console.log('Checking existence after install attempt:');
-      console.log('testDir:', testDir);
-      console.log('npmSgDir:', npmSgDir);
-      console.log('npmSgDir exists:', fs.existsSync(npmSgDir));
-      // Optionally list directory contents
-      try {
-        const files = fs.readdirSync(testDir);
-        console.log('Contents of testDir:', files);
-        const nodeModulesPath = path.join(testDir, 'node_modules');
-        if (fs.existsSync(nodeModulesPath)) {
-           const nodeModulesFiles = fs.readdirSync(nodeModulesPath);
-           console.log('Contents of node_modules:', nodeModulesFiles);
-           const installedPackagePath = path.join(nodeModulesPath, 'sc5-styleguide');
-           console.log('sc5-styleguide in node_modules exists:', fs.existsSync(installedPackagePath));
-        } else {
-           console.log('node_modules directory does not exist in testDir.');
-        }
-      } catch (e) {
-        console.error('Error listing directory:', e);
-      }
-    })
-    .catch(function(err) {
-      console.error('npm install failed.');
-      // The existing spawn function logs error output on failure when stdio is 'pipe'.
-      throw err; // Re-throw the error
-    });
+  return spawn('npm', args, opts);
 }
 
 function generateScssTestProjectStyleGuide(output, variablesFile) {
@@ -196,7 +165,6 @@ function generatePugTestProjectStyleGuide(output) {
 
 function generateDemoStyleGuide(output) {
   var args = getSharedConfig();
-  // This path should now correctly resolve using the updated npmSgDir
   args.kssSource = path.resolve(npmSgDir, 'lib/app/**/*.scss');
   args.output = output;
   return generateStyleGuide(args);
@@ -214,11 +182,8 @@ function getSharedConfig() {
 }
 
 function generateStyleGuide(args) {
-  // Use the executable created by npm in node_modules/.bin
-  // This path remains correct as npm handles the bin link regardless of the package dir name
-  const styleguideExecutablePath = path.join(testDir, 'node_modules/.bin/styleguide');
   var opts = {
-    cwd: testDir, // Run from the temp dir where node_modules is located
+    cwd: npmSgDir,
     env: process.env,
     stdio: [process.stdin, process.stdout, 'pipe']
   }, argv = [];
@@ -235,37 +200,12 @@ function generateStyleGuide(args) {
       argv.push(value);
     }
   });
-
-  console.log('\n--- generateStyleGuide ---'); // Add separator
-  console.log('testDir:', testDir);
-  console.log('npmSgDir:', npmSgDir);
-  console.log('styleguideExecutablePath:', styleguideExecutablePath);
+  
   console.log('Executing styleguide with arguments:', argv);
-  console.log('npmSgDir exists check:', fs.existsSync(npmSgDir)); // Renamed log message slightly
-  console.log('Styleguide script exists check:', fs.existsSync(styleguideExecutablePath)); // Renamed log message slightly
-
-  if (!fs.existsSync(styleguideExecutablePath)) {
-    console.error(chalk.red('Styleguide script not found at expected path!'));
-    // Optionally list directories again for final confirmation
-    try {
-        console.log('Listing testDir before spawn failure:', fs.readdirSync(testDir));
-        const nodeModulesPath = path.join(testDir, 'node_modules');
-        if (fs.existsSync(nodeModulesPath)) {
-           console.log('Listing node_modules before spawn failure:', fs.readdirSync(nodeModulesPath));
-        } else {
-           console.log('node_modules directory still does not exist before spawn failure.');
-        }
-      } catch (e) {
-        console.error('Error listing directory before spawn failure:', e);
-      }
-    return Q.reject(new Error('Styleguide script not found at ' + styleguideExecutablePath));
-  }
-
-  // Execute via node command
-  const nodeExecutable = process.execPath;
-  const spawnArgs = [styleguideExecutablePath].concat(argv);
-  // Use node executable to run the script
-  return spawn(nodeExecutable, spawnArgs, opts);
+  console.log('Directory exists:', fs.existsSync(npmSgDir));
+  console.log('Styleguide binary exists:', fs.existsSync(path.join(npmSgDir, 'bin/styleguide')));
+  
+  return spawn('bin/styleguide', argv, opts);
 }
 
 function deleteTempDir() {
