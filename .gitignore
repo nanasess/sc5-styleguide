@@ -11,3 +11,9 @@ coverage
 .idea
 .DS_Store
 .publish
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
