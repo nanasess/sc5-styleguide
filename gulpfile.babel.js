@@ -11,6 +11,7 @@ var gulp = require('gulp'),
     mainBowerFiles = require('main-bower-files'),
     ngAnnotate = require('gulp-ng-annotate'),
     replace = require('gulp-replace'),
+    ts = require('gulp-typescript'),
     { series, parallel, watch } = require('gulp'),
     toc = require('gulp-doctoc'),
     styleguide = require('./lib/styleguide'),
@@ -34,7 +35,8 @@ function jsApp() {
     'lib/app/js/app.js',
     'lib/app/js/controllers/*.js',
     'lib/app/js/directives/*.js',
-    'lib/app/js/services/*.js'
+    'lib/app/js/services/*.js',
+    'lib/app/js/components/*.js'
   ])
   .pipe(plumber())
   .pipe(ngAnnotate())
@@ -197,6 +199,22 @@ function websiteCss() {
     .pipe(gulp.dest(siteDir + 'css'));
 }
 
+function compileTs() {
+  var tsProject = ts.createProject('tsconfig.json');
+  return tsProject.src()
+    .pipe(plumber({ errorHandler: function(err) {
+      console.error('TypeScript compile error:', err.message);
+      this.emit('end');
+    }}))
+    .pipe(tsProject())
+    .on('error', function(err) {
+      console.error('TypeScript compile error:', err.message);
+      this.emit('end');
+    })
+    .js
+    .pipe(gulp.dest('lib/dist/js'));
+}
+
 function websiteServer() {
   watch(siteDir + 'css/app.css', websiteCss); // Use function reference
 
@@ -222,7 +240,7 @@ function websiteDeploy() {
 
 // --- Combine tasks using series and parallel ---
 
-const buildDist = parallel(copyCss, jsApp, series(bowerTask, jsVendor), copyHtml, copyAssets); // Use function references and series for jsVendor dependency
+const buildDist = parallel(copyCss, jsApp, series(bowerTask, jsVendor), copyHtml, copyAssets, compileTs); // Added TypeScript compilation
 const build = series(cleanDist, buildDist);
 
 function devWatch() { // Define watch part as a separate function
@@ -230,6 +248,7 @@ function devWatch() { // Define watch part as a separate function
   watch(['lib/app/js/**/*.js', 'lib/app/views/**/*', 'lib/app/index.html', '!lib/app/js/vendor/**/*.js'], series(lintJsTask, jsApp, devGenerate));
   watch('lib/app/js/vendor/**/*.js', series(bowerTask, jsVendor, devGenerate)); // Added bowerTask dependency
   watch('lib/app/**/*.html', series(copyHtml, devGenerate));
+  watch('lib/app/js-ts/**/*.ts', series(compileTs, devGenerate)); // Watch TypeScript files
   watch('README.md', series(devDoc, devGenerate));
   watch('lib/styleguide.js', devGenerate); // No need for series for single task
 }
@@ -263,5 +282,6 @@ gulp.task('website:css', websiteCss);
 gulp.task('website', website);
 gulp.task('website:deploy:clean', websiteDeployClean);
 gulp.task('website:deploy', deploy);
+gulp.task('compile:ts', compileTs);
 
 // Export default task if needed, e.g., gulp.task('default', build);

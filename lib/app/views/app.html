@@ -1,0 +1,15 @@
+<div>
+  <!-- ルートレイアウトコンテナ -->
+  <div ng-class="isSideNav()">
+    <div class="nav-toggle" ng-click="toggleSideNav(toggleMenu)">
+      <div class="toggle-icon" ng-class="{'open': toggleMenu}">
+        <div class="toggle-bar"></div>
+        <div class="toggle-bar"></div>
+        <div class="toggle-bar"></div>
+      </div>
+    </div>
+    <div class="sg wrapper" ng-class="{'designerToolVisible': designerTool.isVisible, 'sideNavVisible': toggleMenu}">
+      <ui-view></ui-view>
+    </div>
+  </div>
+</div>
