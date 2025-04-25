@@ -9,6 +9,7 @@ var gulp = require('gulp'),
     plumber = require('gulp-plumber'),
     bower = require('gulp-bower'),
     mainBowerFiles = require('main-bower-files'),
+    ngAnnotate = require('gulp-ng-annotate'),
     replace = require('gulp-replace'),
     { series, parallel, watch } = require('gulp'),
     toc = require('gulp-doctoc'),
@@ -30,9 +31,13 @@ const lintJsTask = testTasks && testTasks['lint:js'] ? testTasks['lint:js'] : (c
 
 function jsApp() {
   return gulp.src([
-    'lib/app/js/vendor/**/*.js'
+    'lib/app/js/app.js',
+    'lib/app/js/controllers/*.js',
+    'lib/app/js/directives/*.js',
+    'lib/app/js/services/*.js'
   ])
   .pipe(plumber())
+  .pipe(ngAnnotate())
   .pipe(concat('app.js'))
   .pipe(gulp.dest(distPath + '/js'));
 }
@@ -42,8 +47,7 @@ function bowerTask() { // Renamed from 'bower' to avoid conflict with the requir
 }
 
 function jsVendor() {
-  // AngularJSの依存関係を削除し、必要なJavaScriptファイルのみを処理
-  return gulp.src(['lib/app/js/vendor/**/*.js', 'lib/app/js/components/highlightjs/**/*.js', 'lib/app/js/components/lodash/lodash.js'])
+  return gulp.src(['lib/app/js/vendor/**/*.js'].concat(mainBowerFiles({filter: /\.js/}))) // Removed gulp.series wrapper
     .pipe(plumber())
     .pipe(concat('vendor.js'))
     .pipe(gulp.dest(distPath + '/js'));
