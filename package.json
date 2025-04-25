@@ -125,6 +125,7 @@
     "test:unit": "mocha --require @babel/register 'test/unit/**/*.js'",
     "test:integration": "mocha --require @babel/register 'test/integration/**/*.js'",
     "test:functional": "karma start test/karma.conf.js --single-run --reporters mocha",
+    "test:e2e": "playwright test",
     "test": "npm run test:unit && npm run test:integration",
     "spellcheck": "yaspeller-ci README.md DEVELOPMENT.md",
     "prepare": "gulp build",
