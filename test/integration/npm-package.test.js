@@ -14,7 +14,7 @@ var fs = require('fs'),
   styleGuideDir = path.resolve(currentDir, '../../'),
   testDir = path.join(tmp, 'sc5-package-smoketest' + Date.now()),
   sharedSrc = path.resolve(currentDir, '../projects/shared-css/*.css'),
-  npmSgDir = path.join(testDir, 'node_modules/sc5-styleguide'),
+  npmSgDir = path.join(testDir, 'node_modules/nanasess-sc5-styleguide'),
   MINUTE = 60000;
 
 Q.longStackSupport = true;
