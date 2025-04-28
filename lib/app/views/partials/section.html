@@ -1,4 +1,18 @@
 <section id="section-{{section.reference}}" class="sg sg-section"
+  ng-class="{active: status.isActive, main: section.isEmptyMainSection}">
+  <header class="sg sg-section-header">
+    <a ui-sref="app.index.section({section: '{{section.reference}}'})">
+      <i class="fa fa-link"></i>
+      <h1 class="sg">
+        <span class="sg-reference-number" ng-if="$root.config.data.showReferenceNumbers">{{ section.reference }}</span>
+        <span ng-bind-html="section.header | unsafe"></span>ction-{{section.reference}}" class="sg sg-section"
+  ng-class="{active: section.isActive, main: section.isEmptyMainSection}">
+  <header class="sg sg-section-header">
+    <a ui-sref="app.index.section({section: '{{section.reference}}'})">
+      <i class="fa fa-link"></i>
+      <h1 class="sg">
+        <span class="sg-reference-number" ng-if="$root.config.data.showReferenceNumbers">{{ section.reference }}</span>
+        <span ng-bind-html="section.header | unsafe"></span> id="section-{{section.reference}}" class="sg sg-section"
   ng-class="{active: isActive(section), main: isEmptyMainSection(section)}">
   <header class="sg sg-section-header">
     <a ui-sref="app.index.section({section: '{{section.reference}}'})">
