@@ -2,6 +2,7 @@ var gulp = require('gulp'),
   styleguide = require('./lib/styleguide'),
   postcss = require('gulp-postcss'),
   rename = require('gulp-rename'),
+  replace = require('gulp-replace'),
   { series, parallel, watch } = require('gulp'), // Added
   source = 'lib/app/css/*.css',
   outputPath = 'demo-output';
@@ -41,14 +42,36 @@ gulp.task('styleguide:applystyles', function() {
       require('autoprefixer'),
       require('postcss-inline-comment')
     ]))
+    // Fix Font Awesome URLs - ensure proper quotes in both URL and format functions
+    // 特にFont Awesome用に対策する
+    .pipe(replace(/src: url\(['"]?(.*?)['"]?\)([^;]*);/g, function(match, url, formats) {
+      // HTMLエンコードされていない形式に修正
+      var newFormats = formats.replace(/format\(['"]?([\w\-]+)['"]?\)/g, function(m, f) {
+        return "format('" + f + "')";
+      });
+      return "src: url('" + url + "')" + newFormats + ";";
+    }))
+    // 汎用のformat修正
+    .pipe(replace(/format\(['"]?([\w\-]+)['"]?\)/g, function(match, formatType) {
+      return "format('" + formatType + "')";
+    }))
+    // 汎用のURL修正
+    .pipe(replace(/url\(['"]?(.*?)['"]?\)/g, function(match, url) {
+      return "url('" + url + "')";
+    }))
     .pipe(rename('styleguide-app.css'))
     .pipe(styleguide.applyStyles())
     .pipe(gulp.dest(outputPath));
 });
 
 gulp.task('styleguide:static', function() {
+  // Copy demo files
   gulp.src(['lib/demo/**'])
     .pipe(gulp.dest(outputPath + '/demo'));
+    
+  // Copy fixed Font Awesome CSS
+  gulp.src(['lib/app/css/font-awesome-fix.css'])
+    .pipe(gulp.dest(outputPath));
 });
 
 // Define styleguide task using parallel
