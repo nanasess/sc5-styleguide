@@ -39,4 +39,6 @@ jobs:
       env:
         CI: 1
         FORCE_COLOR: 1
-      run: npm run test:e2e
+      run: |
+        npm run demo &
+        npm run test:e2e
