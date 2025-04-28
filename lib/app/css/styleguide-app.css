@@ -1,6 +1,7 @@
-$fa-font-path: '{{{appRoot}}}/assets/fonts';
-$fa-version: '4.2.0';
-@import 'components/font-awesome/font-awesome.css';
+/*$fa-font-path: '{{{appRoot}}}/assets/fonts';
+$fa-version: '4.2.0';*/
+@import 'font-awesome-fix.css'; /* 直接修正したファイルをインポート */
+@import 'components/font-awesome/font-awesome.css'; /* 残りのFAスタイルをインポート */
 /*@import 'bourbon';*/
 
 @define-mixin styleguide_custom_styles {
