@@ -129,22 +129,8 @@ function devApplystyles(cb) { // Added cb for async completion
       require('autoprefixer'),
       require('postcss-inline-comment')
     ]))
-    // Fix Font Awesome URLs - ensure proper quotes in both URL and format functions
-    // 特にFont Awesome用に対策する
-    .pipe(replace(/src: url\(['"]?(.*?)['"]?\)([^;]*);/g, function(match, url, formats) {
-      // HTMLエンコードされていない形式に修正
-      var newFormats = formats.replace(/format\(['"]?([\w\-]+)['"]?\)/g, function(m, f) {
-        return "format('" + f + "')";
-      });
-      return "src: url('" + url + "')" + newFormats + ";";
-    }))
-    // 汎用のformat修正
-    .pipe(replace(/format\(['"]?([\w\-]+)['"]?\)/g, function(match, formatType) {
-      return "format('" + formatType + "')";
-    }))
-    // 汎用のURL修正
-    .pipe(replace(/url\(['"]?(.*?)['"]?\)/g, function(match, url) {
-      return "url('" + url + "')";
+    .pipe(replace(/url\((.*)\)/g, function(replacement, parsedPath) {
+      return 'url(\'' + parsedPath.replace(/'/g, '') + '\')';
     }))
     .pipe(styleguide.applyStyles())
     .pipe(gulp.dest(outputPath));
