@@ -7,6 +7,8 @@ interface Section {
   modifiers?: any[];
   parentReference?: string;
   variables?: string[];
+  markup?: string;
+  className?: string;
 }
 
 interface StyleguideService {
