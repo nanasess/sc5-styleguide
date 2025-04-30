@@ -1,12 +1,34 @@
 'use strict';
 
+// 拡張したrootScopeの型を定義
+interface SgRootScope extends ng.IRootScopeService {
+  currentReference: {
+    section: any;
+  };
+}
+
+// sectionスコープの型を定義
+interface SectionScope extends ng.IScope {
+  section: {
+    reference: string;
+    showMarkup: boolean;
+    showCSS: boolean;
+  };
+  markupSection: {
+    isVisible: boolean;
+  };
+  search: {
+    $: string;
+  };
+}
+
 angular.module('sgApp')
-  .directive('sgSection', function($rootScope, $window, $timeout) {
+  .directive('sgSection', function($rootScope: SgRootScope, $window: ng.IWindowService, $timeout: ng.ITimeoutService) {
     return {
       replace: true,
       restrict: 'A',
       templateUrl: 'views/partials/section.html',
-      link: function(scope, element) {
+      link: function(scope: SectionScope, element: ng.IAugmentedJQuery) {
         function updateCurrentReference() {
           var topOffset = element[0].offsetTop,
             bottomOffset = element[0].offsetTop + element[0].offsetHeight,
@@ -17,7 +39,7 @@ angular.module('sgApp')
 
               // Assign new current section
               $rootScope.currentReference.section = scope.section;
-              if (!scope.$$phase) {
+              if (!scope['$$phase']) {
                 $rootScope.$apply();
               }
             }
