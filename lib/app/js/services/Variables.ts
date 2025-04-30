@@ -13,18 +13,18 @@ interface Variable {
 interface VariablesService {
   variables: Variable[];
   socket: any;
-  variableMatches(var1: Variable, var2: Variable): boolean;
-  getLocalVar(variable: Variable): Variable | undefined;
-  getLocalIndex(variable: Variable): number | undefined;
-  getServerVar(variable: Variable): Variable | undefined;
-  refreshDirtyStates(): boolean;
-  refreshValues(): void;
-  resetLocal(): void;
-  setSocket(newSocket: any): VariablesService;
-  addSocketListeners(): void;
-  saveVariables(): void;
-  getDirtyVariables(): Variable[];
-  init(socket: any): void;
+  variableMatches: (var1: Variable, var2: Variable) => boolean;
+  getLocalVar: (variable: Variable) => Variable | undefined;
+  getLocalIndex: (variable: Variable) => number | undefined;
+  getServerVar: (variable: Variable) => Variable | undefined;
+  refreshDirtyStates: () => boolean;
+  refreshValues: () => void;
+  resetLocal: () => void;
+  setSocket: (newSocket: any) => VariablesService;
+  addSocketListeners: () => void;
+  saveVariables: () => void;
+  getDirtyVariables: () => Variable[];
+  init: (socket: any) => void;
 }
 
 angular.module('sgApp')
