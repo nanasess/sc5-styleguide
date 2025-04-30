@@ -1,5 +1,7 @@
 'use strict';
 
+/// <reference path="../interfaces.d.ts" />
+
 // インターフェース定義
 interface DesignScope extends ng.IScope {
   currentReference: {
@@ -17,37 +19,6 @@ interface DesignScope extends ng.IScope {
   saveVariables: () => void;
   resetLocal: () => void;
   dirtyVariablesFound: () => boolean;
-}
-
-interface Section {
-  parentReference?: string;
-  variables?: string[];
-  reference?: string;
-}
-
-// Variable型のインポート
-interface Variable {
-  name: string;
-  file: string;
-  value: string;
-  line?: number;
-  fileHash?: string;
-  dirty?: boolean;
-}
-
-interface VariablesService {
-  variables: Variable[];
-  saveVariables: () => void;
-  resetLocal: () => void;
-}
-
-interface StyleguideService {
-  status: {
-    hasError: boolean;
-    error: any;
-    errType: string;
-  };
-  config: any;
 }
 
 angular.module('sgApp')

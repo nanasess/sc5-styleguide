@@ -4,19 +4,7 @@
  * Handles styleguide data
  */
 
-// インターフェース定義
-interface StyleguideService {
-  sections: any;
-  config: any;
-  variables: any;
-  status: {
-    hasError: boolean;
-    error: any;
-    errType: string;
-  };
-  get(): angular.IPromise<void>;
-  refresh(): void;
-}
+/// <reference path="../interfaces.d.ts" />
 
 interface ResponseData {
   config: any;

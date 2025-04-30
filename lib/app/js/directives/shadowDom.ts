@@ -1,8 +1,6 @@
 'use strict';
 
-interface StyleguideService {
-  config: any;
-}
+/// <reference path="../interfaces.d.ts" />
 
 interface HtmlElementWithShadow extends HTMLElement {
   createShadowRoot: () => DocumentFragment;
