@@ -17,6 +17,7 @@ var gulp = require('gulp'),
     postcss = require('gulp-postcss'),
     rename = require('gulp-rename'),
     rimraf = require('gulp-rimraf'),
+    ts = require('gulp-typescript'),
     distPath = 'lib/dist',
     fs = require('fs'),
     chalk = require('chalk'),
@@ -34,9 +35,12 @@ function jsApp() {
     'lib/app/js/app.js',
     'lib/app/js/controllers/*.js',
     'lib/app/js/directives/*.js',
-    'lib/app/js/services/*.js'
+    'lib/app/js/services/*.js',
+    'lib/app/js/services/*.ts'
   ])
   .pipe(plumber())
+  .pipe(gulpIgnore.exclude('**/*.d.ts'))
+  .pipe(ts(require('./tsconfig.json').compilerOptions))
   .pipe(ngAnnotate())
   .pipe(concat('app.js'))
   .pipe(gulp.dest(distPath + '/js'));
@@ -227,7 +231,7 @@ const build = series(cleanDist, buildDist);
 
 function devWatch() { // Define watch part as a separate function
   watch('lib/app/css/**/*.css', series(copyCss, devGenerate, devApplystyles));
-  watch(['lib/app/js/**/*.js', 'lib/app/views/**/*', 'lib/app/index.html', '!lib/app/js/vendor/**/*.js'], series(lintJsTask, jsApp, devGenerate));
+  watch(['lib/app/js/**/*.{js,ts}', 'lib/app/views/**/*', 'lib/app/index.html', '!lib/app/js/vendor/**/*.js'], series(lintJsTask, jsApp, devGenerate));
   watch('lib/app/js/vendor/**/*.js', series(bowerTask, jsVendor, devGenerate)); // Added bowerTask dependency
   watch('lib/app/**/*.html', series(copyHtml, devGenerate));
   watch('README.md', series(devDoc, devGenerate));
