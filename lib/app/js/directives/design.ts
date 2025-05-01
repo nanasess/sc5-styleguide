@@ -1,29 +1,50 @@
 'use strict';
 
+/// <reference path="../interfaces.d.ts" />
+
+// インターフェース定義
+interface DesignScope extends ng.IScope {
+  currentReference: {
+    section: {
+      variables?: string[];
+      reference: string;
+    }
+  };
+  sections: {
+    data: any[];
+  };
+  status: any;
+  showRelated: boolean;
+  relatedChildVariableNames: string[];
+  saveVariables: () => void;
+  resetLocal: () => void;
+  dirtyVariablesFound: () => boolean;
+}
+
 angular.module('sgApp')
-  .directive('sgDesign', function(Variables, Styleguide) {
+  .directive('sgDesign', function(Variables: VariablesService, Styleguide: StyleguideService) {
     return {
       replace: true,
       restrict: 'A',
       templateUrl: 'views/partials/design.html',
-      link: function(scope) {
-        var parentRef;
+      link: function(scope: DesignScope) {
+        var parentRef: string;
 
-        function isSubSection(section) {
+        function isSubSection(section: Section): boolean {
           var ref = section.parentReference;
           return (typeof ref === 'string') &&
             (ref === parentRef || ref.substring(0, ref.indexOf('.')) === parentRef);
         }
 
-        function getVariables(section) {
-          return section.variables;
+        function getVariables(section: Section): string[] {
+          return section.variables || [];
         }
 
-        function concat(a, b) {
+        function concat(a: string[], b: string[]): string[] {
           return a.concat(b);
         }
 
-        function unique(a, idx, arr) {
+        function unique(a: string | undefined, idx: number, arr: (string | undefined)[]): boolean {
           return a !== undefined && arr.indexOf(a) === idx;
         }
 
@@ -37,7 +58,7 @@ angular.module('sgApp')
             scope.relatedChildVariableNames = scope.sections.data.filter(isSubSection)
               .map(getVariables)
               .reduce(concat, [])
-              .filter(unique);
+              .filter(unique as any);
           }
         });
 
@@ -49,12 +70,11 @@ angular.module('sgApp')
           Variables.resetLocal();
         };
 
-        scope.dirtyVariablesFound = function() {
+        scope.dirtyVariablesFound = function(): boolean {
           return Variables.variables.some(function(variable) {
             return variable.dirty && variable.dirty === true;
           });
         };
-
       }
     };
   });

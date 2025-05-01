@@ -1,5 +1,5 @@
-// @ts-check
-import { test, expect } from '@playwright/test';
+// filepath: /home/nanasess/git-repos/sc5-styleguide/test/e2e/styleguide.spec.ts
+import { test, expect, Page } from '@playwright/test';
 
 test('has title', async ({ page }) => {
   await page.goto('http://localhost:3000/');
