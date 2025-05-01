@@ -16,10 +16,10 @@
     "strictNullChecks": false
   },
   "include": [
-    "lib/app/js/**/*.ts"
+    "lib/app/js/**/*.ts",
+    "test/e2e/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "**/*.spec.ts"
+    "node_modules"
   ]
 }
