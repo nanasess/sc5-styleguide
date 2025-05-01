@@ -32,7 +32,7 @@ const lintJsTask = testTasks && testTasks['lint:js'] ? testTasks['lint:js'] : (c
 
 function jsApp() {
   return gulp.src([
-    'lib/app/js/app.js',
+    'lib/app/js/app.ts',
     'lib/app/js/controllers/*.js',
     'lib/app/js/controllers/*.ts',
     'lib/app/js/directives/*.js',
