@@ -44,3 +44,16 @@ node/16.20.2
 node/22.14.0
 
 *`n` コマンドがインストールされていない場合は `npm install -g n` でインストールしてください。*
+
+## TODO
+
+- デモ環境(`npm run demo` で起動する環境)の AngularJS から Angular へのマイグレーション
+  - [X] JavaScript を TypeScript へマイグレーション
+  - [ ] コンポーネントディレクティブの使用
+  - [ ] ngUpgrade の導入
+  - [ ] ハイブリッドアプリケーションへのマイグレーション
+  - [ ] Angular2.0 へのマイグレーション
+  - [ ] Angular19 へのマイグレーション
+
+AngularJS から Angular へのマイグレーションベストプラクティスは以下にあります
+@https://v17.angular.io/guide/upgrade
