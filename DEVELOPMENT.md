@@ -27,7 +27,7 @@ gulp dev
 
 ## Running tests
 
-Run all the tests and JSCS linting with
+Run all the tests and JSHint linting with
 
 ```sh
 npm test
@@ -38,15 +38,13 @@ Node module tests are ran with Mocha, UI related tests with Karma & PhantomJS.
 ## Coding convention
 
 This project follows Airbnb [JavaScript coding convention](https://github.com/airbnb/javascript) (with a few changes).
-It is tuned to use [JSCS](http://jscs.info/) as a code checker.
 The checking is injected into the testing process,
 so you can see in Travis respond to your pull-request
 if your files follow the convention.
 
 To be able to check during development, please
 
-* run `$ gulp jscs`
-* use [JSCS editor plugins](https://github.com/jscs-dev/node-jscs#friendly-packages)
+* run `$ gulp jshint`
 * use [pre-commit hook](https://github.com/SC5/sc5-configurations/tree/master/.githooks/pre-commit)
 
 ## How to release
