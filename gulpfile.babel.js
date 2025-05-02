@@ -123,7 +123,13 @@ function devApplystyles(cb) { // Added cb for async completion
     .pipe(postcss([
       require('postcss-partial-import'),
       require('postcss-mixins'),
-      require('gulp-cssnext'),
+      require('postcss-cssnext')({
+        features: {
+          customProperties: true,
+          nesting: false, // nestingプラグインを無効化して解析エラーを回避
+          calc: false // calcプラグインを無効化して解析エラーを回避
+        }
+      }),
       require('postcss-advanced-variables'),
       require('postcss-conditionals'),
       require('postcss-color-function'),
