@@ -43,9 +43,8 @@ gulp.task('styleguide:applystyles', function() {
       require('postcss-color-alpha'),
       require('postcss-nested'),
       require('postcss-custom-media'),
-      require('autoprefixer'),
-      require('postcss-inline-comment')
-    ]))
+      require('autoprefixer')
+    ], { syntax: require('postcss-scss') }))
     .pipe(rename('styleguide-app.css'))
     .pipe(styleguide.applyStyles())
     .pipe(gulp.dest(outputPath));

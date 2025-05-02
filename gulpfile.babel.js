@@ -135,9 +135,8 @@ function devApplystyles(cb) { // Added cb for async completion
       require('postcss-color-alpha'),
       require('postcss-nested'),
       require('postcss-custom-media'),
-      require('autoprefixer'),
-      require('postcss-inline-comment')
-    ]))
+      require('autoprefixer')
+    ], { syntax: require('postcss-scss') }))
     .pipe(replace(/url\((.*)\)/g, function(replacement, parsedPath) {
       return 'url(\'' + parsedPath.replace(/'/g, '') + '\')';
     }))
