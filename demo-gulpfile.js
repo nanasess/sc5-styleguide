@@ -39,7 +39,6 @@ gulp.task('styleguide:applystyles', function() {
         }
       }),
       require('postcss-advanced-variables'),
-      require('postcss-conditionals'),
       require('postcss-color-function'),
       require('postcss-color-alpha'),
       require('postcss-nested'),

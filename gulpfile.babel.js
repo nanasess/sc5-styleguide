@@ -131,7 +131,6 @@ function devApplystyles(cb) { // Added cb for async completion
         }
       }),
       require('postcss-advanced-variables'),
-      require('postcss-conditionals'),
       require('postcss-color-function'),
       require('postcss-color-alpha'),
       require('postcss-nested'),
