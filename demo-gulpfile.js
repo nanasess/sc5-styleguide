@@ -31,7 +31,7 @@ gulp.task('styleguide:applystyles', function() {
     .pipe(postcss([
       require('postcss-partial-import'),
       require('postcss-mixins'),
-      require('postcss-cssnext')({
+      require('postcss-preset-env')({
         features: {
           customProperties: true,
           nesting: false, // nestingプラグインを無効化して解析エラーを回避
