@@ -123,16 +123,20 @@ function devApplystyles(cb) { // Added cb for async completion
     .pipe(postcss([
       require('postcss-partial-import'),
       require('postcss-mixins'),
-      require('gulp-cssnext'),
+      require('postcss-preset-env')({
+        features: {
+          customProperties: true,
+          nesting: false, // nestingプラグインを無効化して解析エラーを回避
+          calc: false // calcプラグインを無効化して解析エラーを回避
+        }
+      }),
       require('postcss-advanced-variables'),
-      require('postcss-conditionals'),
       require('postcss-color-function'),
       require('postcss-color-alpha'),
       require('postcss-nested'),
       require('postcss-custom-media'),
-      require('autoprefixer'),
-      require('postcss-inline-comment')
-    ]))
+      require('autoprefixer')
+    ], { syntax: require('postcss-scss') }))
     .pipe(replace(/url\((.*)\)/g, function(replacement, parsedPath) {
       return 'url(\'' + parsedPath.replace(/'/g, '') + '\')';
     }))
