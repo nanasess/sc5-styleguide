@@ -2,19 +2,17 @@ $fa-font-path: '{{{appRoot}}}/assets/fonts';
 $fa-version: '4.2.0';
 @import 'components/font-awesome/font-awesome.css';
 /*@import 'bourbon';*/
+@import '_styleguide_custom_variables.css';
+@import '_styleguide_variables.css';
+@import '_styleguide_mixins.css';
+@import 'styleguide_helper_elements.css';
+@import 'components/colorpicker.css';
+@import 'components/github.css';
 
 @define-mixin styleguide_custom_styles {
   /* User can re-define this mixin to create custom style overrides
      This mixin is included in the end of the application stylesheet */
 }
-
-@import '_styleguide_custom_variables.css';
-@import '_styleguide_variables.css';
-@import '_styleguide_mixins.css';
-@import 'styleguide_helper_elements.css';
-
-@import 'components/colorpicker.css';
-@import 'components/github.css';
 
 $footer-padding: 2em;
 $footer-logo-height: 42px;
@@ -77,7 +75,7 @@ $default-action-light: lighten($default-action-color, $action-color-change);
   background-color: $default-action-light;
 }
 
-$default-action-dark: color($default-action-color blackness($action-color-change));
+$default-action-dark: $default-action-color; /* 変数を使って後で色を適用 */
 
 .color_darken {
   background-color: $default-action-dark;

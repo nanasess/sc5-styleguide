@@ -29,19 +29,19 @@ gulp.task('styleguide:generate', function() {
 gulp.task('styleguide:applystyles', function() {
   return gulp.src('lib/app/css/styleguide-app.css')
     .pipe(postcss([
-      require('postcss-partial-import'),
+      require('postcss-import'),
+      require('postcss-advanced-variables'),
+      require('postcss-nested'),
+      require('postcss-custom-media'),
       require('postcss-preset-env')({
         features: {
           customProperties: true,
           nesting: false, // nestingプラグインを無効化して解析エラーを回避
-          calc: false // calcプラグインを無効化して解析エラーを回避
+          calc: false, // calcプラグインを無効化して解析エラーを回避
+          colorFunction: true // colorプラグインを有効化して変数を先に処理
         }
       }),
-      require('postcss-advanced-variables'),
-      require('postcss-color-function'),
       require('postcss-color-alpha'),
-      require('postcss-nested'),
-      require('postcss-custom-media'),
       require('autoprefixer')
     ], { syntax: require('postcss-scss') }))
     .pipe(rename('styleguide-app.css'))
