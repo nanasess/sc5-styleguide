@@ -30,7 +30,6 @@ gulp.task('styleguide:applystyles', function() {
   return gulp.src('lib/app/css/styleguide-app.css')
     .pipe(postcss([
       require('postcss-partial-import'),
-      require('postcss-mixins'),
       require('postcss-preset-env')({
         features: {
           customProperties: true,

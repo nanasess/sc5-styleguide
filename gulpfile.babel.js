@@ -122,7 +122,6 @@ function devApplystyles(cb) { // Added cb for async completion
     .pipe(replace('{{{appRoot}}}', ''))
     .pipe(postcss([
       require('postcss-partial-import'),
-      require('postcss-mixins'),
       require('postcss-preset-env')({
         features: {
           customProperties: true,
