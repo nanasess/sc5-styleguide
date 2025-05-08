@@ -3,7 +3,6 @@
 var vfs = require('vinyl-fs'),
   path = require('path'),
   plumber = require('gulp-plumber'),
-  jscs = require('gulp-jscs'),
   jshint = require('gulp-jshint'),
   mocha = require('gulp-mocha'),
   coverage = require('istanbul'),
@@ -26,12 +25,6 @@ function srcJsLint() {
   ]);
 }
 
-function runJscs() {
-  return srcJsLint()
-    .pipe(plumber())
-    .pipe(jscs({configPath: '.jscsrc'}));
-}
-
 function runJsHint() {
   return srcJsLint()
     .pipe(plumber())
@@ -40,7 +33,7 @@ function runJsHint() {
     .pipe(jshint.reporter('fail'));
 }
 
-const lintJs = parallel(runJscs, runJsHint);
+const lintJs = runJsHint;
 
 function runMocha() {
   return mocha({reporter: 'spec'});
@@ -103,7 +96,6 @@ function generateCoverageReport() {
 }
 
 tasks = {
-  'jscs': runJscs,
   'jshint': runJsHint,
   'lint:js': lintJs,
   'test:unit': runUnitTests,
