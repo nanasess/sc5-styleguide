@@ -7,6 +7,13 @@
 - node v22.14.0 で `npm run demo` が成功し、ブラウザでスタイルガイドの表示を確認済みです。
 - タスクが完了したら、[.github/prompts](.github/prompts) 以下に `YYYYMMhhmm.md` というファイル名で、プロンプトの履歴を保存してください。
 
+## 直接編集不可のファイル
+
+以下のファイル・ディレクトリ内のファイルは直接編集せず、 gulp プロセスを調整してください
+- lib/app/js/components
+- lib/dist
+- demo-output
+
 ## テストの実施
 
 ### ユニットテスト及びインテグレーションテスト
