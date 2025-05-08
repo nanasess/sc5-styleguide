@@ -27,17 +27,61 @@ gulp.task('styleguide:generate', function() {
 });
 
 gulp.task('styleguide:applystyles', function() {
+  // 変数ファイルのパスを設定
+  const variableFiles = [
+    'lib/app/css/_styleguide_variables.css', 
+    'lib/app/css/_styleguide_custom_variables.css'
+  ];
+  
   return gulp.src('lib/app/css/styleguide-app.css')
     .pipe(postcss([
       require('postcss-import'),
-      require('postcss-advanced-variables'),
+      require('postcss-advanced-variables')({
+        // 変数が見つからない場合はそのままにする
+        unresolved: 'ignore',
+        // デフォルト値と変数解決の優先度を調整
+        disable: {
+          'default': false, // !defaultを処理する
+          'global': false,  // グローバル変数を有効にする
+          // その他の機能は必要に応じて無効化
+        },
+        // 変数ファイルを明示的にインポート
+        variables: (() => {
+          const fs = require('fs');
+          // 変数ファイルから変数を読み込む
+          const variables = {};
+          variableFiles.forEach(file => {
+            try {
+              if (fs.existsSync(file)) {
+                const content = fs.readFileSync(file, 'utf8');
+                // 簡易的な変数抽出（より堅牢な方法が必要かもしれません）
+                const matches = content.match(/\$([\w-]+):\s*([^;!]+)(?:!default)?;/g);
+                if (matches) {
+                  matches.forEach(match => {
+                    const nameMatch = match.match(/\$([\w-]+):/);
+                    const valueMatch = match.match(/:\s*([^;!]+)(?:!default)?;/);
+                    if (nameMatch && valueMatch) {
+                      const name = nameMatch[1];
+                      const value = valueMatch[1].trim();
+                      variables[name] = value;
+                    }
+                  });
+                }
+              }
+            } catch (e) {
+              console.error(`Error loading variables from ${file}:`, e);
+            }
+          });
+          return variables;
+        })()
+      }),
       require('postcss-nested'),
       require('postcss-custom-media'),
       require('postcss-preset-env')({
         features: {
           customProperties: true,
           nesting: false, // nestingプラグインを無効化して解析エラーを回避
-          calc: false, // calcプラグインを無効化して解析エラーを回避
+          calc: true, // calcプラグインを有効化してcalc()関数を処理
           colorFunction: true // colorプラグインを有効化して変数を先に処理
         }
       }),
