@@ -81,7 +81,7 @@
     "chai": "~3.4.1",
     "conventional-changelog": "^5.0.0",
     "coveralls": "~2.11.2",
-    "del": "~2.1.0",
+    "del": "^8.0.0",
     "dependency-check": "~2.5.1",
     "gulp-babel": "^8.0.0",
     "gulp-bower": "~0.0.10",

@@ -5,7 +5,7 @@ var fs = require('fs'),
   childProcess = require('child_process'),
   chai = require('chai'),
   Q = require('q'),
-  del = require('del'),
+  { deleteSync } = require('del'),
   chalk = require('chalk'),
   tmp = require('os').tmpdir(),
   testConfig = require('./test-config'),
@@ -210,8 +210,8 @@ function generateStyleGuide(args) {
 
 function deleteTempDir() {
   console.log(chalk.yellow('Cleaning up temp dir', testDir));
-  del.sync(path.join(testDir, '*'), { force: true });
-  del.sync(testDir, { force: true });
+  deleteSync(path.join(testDir, '*'), { force: true });
+  deleteSync(testDir, { force: true });
 }
 
 function spawn(cmd, args, opts) {

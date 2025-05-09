@@ -9,7 +9,7 @@ var vfs = require('vinyl-fs'),
   istanbul = require('gulp-istanbul'),
   through = require('through2'),
   { series, parallel } = require('gulp'),
-  del = require('del'),
+  { deleteSync } = require('del'),
   tasks;
 
 function srcJsLint() {
@@ -76,7 +76,8 @@ const runFastTests = series(lintJs, runUnitTests, runStructureIntegrationTests);
 const runAllTests = series(runUnitTests, runIntegrationTests, lintJs);
 
 function cleanCoverageDir(done) {
-  del('coverage/*', done);
+  deleteSync('coverage/*');
+  done();
 }
 
 function generateCoverageReport() {
