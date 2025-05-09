@@ -117,6 +117,7 @@
     "prepare": "gulp build",
     "build": "gulp build",
     "demo": "gulp --gulpfile ./demo-gulpfile.js watch",
+    "demo:cleanup": "gulp --gulpfile ./demo-gulpfile.js clean",
     "depcheck": "dependency-check . --unused --no-dev --entry gulpfile.js --entry demo-gulpfile.js --entry lib/styleguide.js"
   },
   "overrides": {
