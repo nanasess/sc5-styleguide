@@ -105,15 +105,13 @@
     "requirefrom": "~0.2.0",
     "sinon": "~1.17.2",
     "sinon-chai": "~2.8.0",
-    "typescript": "^5.8.3",
-    "yaspeller-ci": "^0.3.0"
+    "typescript": "^5.8.3"
   },
   "scripts": {
     "test:unit": "mocha --require @babel/register 'test/unit/**/*.js'",
     "test:integration": "mocha --require @babel/register 'test/integration/**/*.js'",
     "test:e2e": "playwright test",
     "test": "npm run test:unit && npm run test:integration",
-    "spellcheck": "yaspeller-ci README.md DEVELOPMENT.md",
     "prepare": "gulp build",
     "build": "gulp build",
     "demo": "gulp --gulpfile ./demo-gulpfile.js watch",
