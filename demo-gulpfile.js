@@ -4,7 +4,17 @@ var gulp = require('gulp'),
   rename = require('gulp-rename'),
   { series, parallel, watch } = require('gulp'), // Added
   source = 'lib/app/css/*.css',
-  outputPath = 'demo-output';
+  outputPath = 'demo-output',
+  { deleteAsync } = require('del'); // 修正: del v8以降はdeleteAsyncを使用
+
+// クリーンアップタスク
+gulp.task('clean', function() {
+  return deleteAsync([
+    'lib/app/js/components/*',
+    'lib/dist/*',
+    'demo-output/*'
+  ]);
+});
 
 gulp.task('styleguide:generate', function() {
   return gulp.src(source)

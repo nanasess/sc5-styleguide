@@ -5,11 +5,9 @@ var vfs = require('vinyl-fs'),
   plumber = require('gulp-plumber'),
   jshint = require('gulp-jshint'),
   mocha = require('gulp-mocha'),
-  coverage = require('istanbul'),
-  istanbul = require('gulp-istanbul'),
   through = require('through2'),
   { series, parallel } = require('gulp'),
-  del = require('del'),
+  { deleteSync } = require('del'),
   tasks;
 
 function srcJsLint() {
@@ -39,28 +37,8 @@ function runMocha() {
   return mocha({reporter: 'spec'});
 }
 
-function runUnitTests(done) {
-  vfs.src(['lib/modules/**/*.js'])
-    .pipe(istanbul({includeUntested: true}))
-    .pipe(istanbul.hookRequire())
-    .on('finish', () => {
-      vfs.src(['test/unit/**/*.js'])
-        .pipe(runMocha())
-        .pipe(writeUnitTestCoverage())
-        .pipe(printUnitTestCoverage())
-        .on('end', done);
-    });
-}
-
-function writeUnitTestCoverage() {
-  return istanbul.writeReports({
-    reporters: ['json'],
-    reportOpts: {file: path.resolve('./coverage/unit-coverage.json')}
-  });
-}
-
-function printUnitTestCoverage() {
-  return istanbul.writeReports({reporters: ['text']});
+function runUnitTests() {
+  return vfs.src(['test/unit/**/*.js']).pipe(runMocha());
 }
 
 function runStructureIntegrationTests() {
@@ -75,26 +53,6 @@ const runFastTests = series(lintJs, runUnitTests, runStructureIntegrationTests);
 
 const runAllTests = series(runUnitTests, runIntegrationTests, lintJs);
 
-function cleanCoverageDir(done) {
-  del('coverage/*', done);
-}
-
-function generateCoverageReport() {
-  var collector = new coverage.Collector(),
-    lcov = coverage.Report.create('lcov', {dir: 'coverage'}),
-    summary = coverage.Report.create('text');
-
-  return vfs.src('coverage/*.json')
-    .pipe(through.obj( (file, enc, done) => {
-      collector.add(JSON.parse(file.contents.toString()));
-      done();
-    }, (callback) => {
-      lcov.writeReport(collector);
-      summary.writeReport(collector);
-      callback();
-    }));
-}
-
 tasks = {
   'jshint': runJsHint,
   'lint:js': lintJs,
@@ -102,9 +60,7 @@ tasks = {
   'test:integration': runIntegrationTests,
   'test:integration:structure': runStructureIntegrationTests,
   'test:fast': runFastTests,
-  'test': runUnitTests,
-  'clean-coverage': cleanCoverageDir,
-  'generate-coverage-report': generateCoverageReport
+  'test': runUnitTests
 };
 
 module.exports = function registerTasks(gulp) {
