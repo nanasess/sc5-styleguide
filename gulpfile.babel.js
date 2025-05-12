@@ -4,12 +4,9 @@ var gulp = require('gulp'),
     gutil = require('gulp-util'),
     concat = require('gulp-concat'),
     clean = require('gulp-clean'),
-    cssmin = require('gulp-cssmin'),
     ghPages = require('gulp-gh-pages'),
     gulpIgnore = require('gulp-ignore'),
     plumber = require('gulp-plumber'),
-    bower = require('gulp-bower'),
-    mainBowerFiles = require('main-bower-files'),
     ngAnnotate = require('gulp-ng-annotate'),
     replace = require('gulp-replace'),
     { series, parallel, watch } = require('gulp'),
@@ -19,8 +16,9 @@ var gulp = require('gulp'),
     rename = require('gulp-rename'),
     rimraf = require('gulp-rimraf'),
     ts = require('gulp-typescript'),
+    header = require('gulp-header'), // gulp-header を追加
+    sourcemaps = require('gulp-sourcemaps'), // gulp-sourcemaps を追加
     distPath = 'lib/dist',
-    fs = require('fs'),
     chalk = require('chalk'),
     outputPath = 'demo-output',
     webserver = require('gulp-webserver');
@@ -49,14 +47,28 @@ function jsApp() {
   .pipe(gulp.dest(distPath + '/js'));
 }
 
-function bowerTask() { // Renamed from 'bower' to avoid conflict with the required module
-  return bower();
-}
-
 function jsVendor() {
-  return gulp.src(['lib/app/js/vendor/**/*.js'].concat(mainBowerFiles({filter: /\.js/}))) // Removed gulp.series wrapper
+  return gulp.src([
+    'node_modules/lodash/lodash.js', // Lodash を最初の方で読み込む
+    'lib/app/js/vendor/**/*.js', // Keep existing vendor files
+    'node_modules/highlight.js/lib/highlight.js',
+    'node_modules/angular/angular.js',
+    'node_modules/angular-animate/angular-animate.js',
+    'node_modules/angular-highlightjs/build/angular-highlightjs.js',
+    'node_modules/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js',
+    'node_modules/angular-local-storage/dist/angular-local-storage.js',
+    'node_modules/oclazyload/dist/ocLazyLoad.js',
+    'node_modules/ngprogress/build/ngprogress.js',
+    'node_modules/angular-debounce/dist/angular-debounce.js',
+    'node_modules/angular-scroll/angular-scroll.js',
+    'node_modules/event-polyfill/index.js',
+    'node_modules/angular-ui-router/release/angular-ui-router.js'
+  ])
     .pipe(plumber())
+    .pipe(sourcemaps.init())
     .pipe(concat('vendor.js'))
+    .pipe(header('var global = window;\n')) // vendor.js の先頭に `var global = window;` を追加
+    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(distPath + '/js'));
 }
 
@@ -89,7 +101,7 @@ function devStatic() {
 function devDoc() {
   return gulp.src('README.md')
     .pipe(toc())
-    .pipe(replace(/[^\n]*Table of Contents[^\n]*\n/g, ''))
+    .pipe(replace(/[^\\n]*Table of Contents[^\\n]*\\n/g, ''))
     .pipe(gulp.dest('./'));
 }
 
@@ -236,7 +248,9 @@ function friday(cb) {
 function websiteCss() {
   return gulp.src(siteDir + 'css/*.css') // Return the stream
     .pipe(gulpIgnore.exclude('*.min.css'))
-    .pipe(cssmin())
+    .pipe(postcss([
+      require('cssnano')()
+    ]))
     .pipe(rename({suffix: '.min'}))
     .pipe(gulp.dest(siteDir + 'css'));
 }
@@ -266,13 +280,13 @@ function websiteDeploy() {
 
 // --- Combine tasks using series and parallel ---
 
-const buildDist = parallel(copyCss, jsApp, series(bowerTask, jsVendor), copyHtml, copyAssets); // Use function references and series for jsVendor dependency
+const buildDist = parallel(copyCss, jsApp, jsVendor, copyHtml, copyAssets);
 const build = series(cleanDist, buildDist);
 
 function devWatch() { // Define watch part as a separate function
   watch('lib/app/css/**/*.css', series(copyCss, devGenerate, devApplystyles));
   watch(['lib/app/js/**/*.{js,ts}', 'lib/app/views/**/*', 'lib/app/index.html', '!lib/app/js/vendor/**/*.js'], series(lintJsTask, jsApp, devGenerate));
-  watch('lib/app/js/vendor/**/*.js', series(bowerTask, jsVendor, devGenerate)); // Added bowerTask dependency
+  watch('lib/app/js/vendor/**/*.js', series(jsVendor, devGenerate)); // Removed bowerTask
   watch('lib/app/**/*.html', series(copyHtml, devGenerate));
   watch('README.md', series(devDoc, devGenerate));
   watch('lib/styleguide.js', devGenerate); // No need for series for single task
@@ -286,8 +300,7 @@ const deploy = series(websiteDeployClean, websiteDeploy); // Renamed from websit
 // --- Register tasks with Gulp ---
 
 gulp.task('js:app', jsApp);
-gulp.task('bower', bowerTask);
-gulp.task('js:vendor', series(bowerTask, jsVendor)); // Explicitly define series here too
+gulp.task('js:vendor', jsVendor); // Removed bowerTask dependency
 gulp.task('copy:css', copyCss);
 gulp.task('html', copyHtml);
 gulp.task('assets', copyAssets);

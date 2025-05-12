@@ -39,6 +39,15 @@ angular.module('sgApp', deps_modules)
         Object.assign(styleguideConfig, window['_styleguideConfig']);
       }
       
+      // lodash を window オブジェクトに設定
+      if (typeof window['_'] === 'undefined' && typeof require === 'function') {
+        try {
+          window['_'] = require('lodash');
+        } catch (e) {
+          console.error('Lodash could not be loaded. Please make sure it is installed.', e);
+        }
+      }
+
       $urlRouterProvider.otherwise('/');
       $stateProvider
         .state('app', {
@@ -140,7 +149,17 @@ angular.module('sgApp', deps_modules)
   ])
   .factory('lodash', ['$window', function($window: any): any {
     // Use both methods to access _ so it will work eventhough $window is mocked
-    return $window['_'] || window['_'];
+    const lodash = $window['_'] || window['_'];
+    if (!lodash) {
+      // フォールバックとして require を試みる (ブラウザ環境では通常不要)
+      try {
+        return require('lodash');
+      } catch (e) {
+        console.error('Lodash could not be loaded via $window or require. Please ensure it is available globally or install it.');
+        return null; // または適切なエラー処理
+      }
+    }
+    return lodash;
   }])
   .run(['$rootScope', '$window', 'lodash', function($rootScope: any, $window: any, lodash: any): void {
     $rootScope.currentReference = {

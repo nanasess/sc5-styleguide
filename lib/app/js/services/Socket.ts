@@ -75,7 +75,8 @@ angular.module('sgApp')
           socket.disconnect();
         }
 
-        socket = $window.io.connect();
+        // Socket.IO v4 preferred method, but keeping backwards compatibility
+        socket = $window.io();
 
         deferredEventListeners.forEach(function(deferred: SocketEventListener) {
           socket.on(deferred.event, deferred.listener);
