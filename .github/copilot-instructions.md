@@ -85,7 +85,7 @@ node/22.14.0
   - 関連パッケージ: `inflight@1.0.6`
   - glob のマイグレーションも必要
 
-- [ ] **natives パッケージのNode.js内部APIへの依存対応**
+- [X] **natives パッケージのNode.js内部APIへの依存対応**
   - 対応内容: graceful-fs@4.xに更新
   - 影響: Node.jsバージョン更新時に突然動作しなくなるリスク
   - 関連パッケージ: `natives@1.1.6`
