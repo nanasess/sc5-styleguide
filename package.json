@@ -86,7 +86,6 @@
     "babel-plugin-module-resolver": "^4.1.0",
     "chai": "~3.4.1",
     "conventional-changelog": "^5.0.0",
-    "coveralls": "~2.11.2",
     "cssnano": "^7.0.7",
     "del": "^8.0.0",
     "dependency-check": "~2.5.1",
