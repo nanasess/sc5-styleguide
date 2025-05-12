@@ -87,12 +87,12 @@
     "chai": "~3.4.1",
     "conventional-changelog": "^5.0.0",
     "coveralls": "~2.11.2",
+    "cssnano": "^7.0.7",
     "del": "^8.0.0",
     "dependency-check": "~2.5.1",
     "event-polyfill": "^1.0.0",
     "gulp-babel": "^8.0.0",
     "gulp-clean": "^0.3.2",
-    "gulp-cssmin": "^0.1.7",
     "gulp-doctoc": "^0.1.2",
     "gulp-gh-pages": "^0.5.4",
     "gulp-header": "^2.0.9",
@@ -130,6 +130,10 @@
     "depcheck": "dependency-check . --unused --no-dev --entry gulpfile.js --entry demo-gulpfile.js --entry lib/styleguide.js"
   },
   "overrides": {
-    "minimatch": "^3.1.2"
+    "minimatch": "^3.1.2",
+    "graceful-fs": "^4.2.11",
+    "temp-write": {
+      "graceful-fs": "^4.2.11"
+    }
   }
 }

@@ -4,7 +4,6 @@ var gulp = require('gulp'),
     gutil = require('gulp-util'),
     concat = require('gulp-concat'),
     clean = require('gulp-clean'),
-    cssmin = require('gulp-cssmin'),
     ghPages = require('gulp-gh-pages'),
     gulpIgnore = require('gulp-ignore'),
     plumber = require('gulp-plumber'),
@@ -249,7 +248,9 @@ function friday(cb) {
 function websiteCss() {
   return gulp.src(siteDir + 'css/*.css') // Return the stream
     .pipe(gulpIgnore.exclude('*.min.css'))
-    .pipe(cssmin())
+    .pipe(postcss([
+      require('cssnano')()
+    ]))
     .pipe(rename({suffix: '.min'}))
     .pipe(gulp.dest(siteDir + 'css'));
 }
