@@ -47,7 +47,7 @@
     "kss": "^3.1.0",
     "markdown-it": "^8.3.1",
     "minimatch": "^3.1.2",
-    "minimist": "^1.2.0",
+    "minimist": "^1.2.8",
     "morgan": "~1.10.0",
     "node-localcache": "^0.1.3",
     "postcss": "^8.5.3",
@@ -130,6 +130,7 @@
   },
   "overrides": {
     "minimatch": "^3.1.2",
+    "minimist": "^1.2.8",
     "graceful-fs": "^4.2.11",
     "temp-write": {
       "graceful-fs": "^4.2.11"
