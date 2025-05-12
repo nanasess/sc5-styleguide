@@ -50,6 +50,7 @@
     "minimist": "^1.2.8",
     "morgan": "~1.10.0",
     "node-localcache": "^0.1.3",
+    "open": "^10.1.2",
     "postcss": "^8.5.3",
     "postcss-advanced-variables": "^5.0.0",
     "postcss-color-alpha": "^2.0.0",
@@ -63,6 +64,7 @@
     "run-sequence": "^2.2.1",
     "socket.io": "^4.7.5",
     "through2": "~2.0.0",
+    "underscore": "^1.13.7",
     "vinyl": "~3.0.0",
     "vinyl-fs": "~4.0.0",
     "yargs": "~3.30.0"
@@ -132,6 +134,9 @@
     "minimatch": "^3.1.2",
     "minimist": "^1.2.8",
     "graceful-fs": "^4.2.11",
+    "lodash": "^4.17.21",
+    "open": "^10.1.2",
+    "underscore": "^1.13.7",
     "temp-write": {
       "graceful-fs": "^4.2.11"
     }
