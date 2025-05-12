@@ -31,7 +31,7 @@
     "bemto.pug": "^2.1.0",
     "body-parser": "~2.2.0",
     "chalk": "~1.1.1",
-    "cheerio": "^0.19.0",
+    "cheerio": "^1.0.0",
     "cookie-parser": "~1.4.7",
     "css": "~2.2.0",
     "express": "~4.21.2",
