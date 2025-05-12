@@ -157,7 +157,7 @@ node/22.14.0
    - 対応: 最新バージョン（4.x系）へアップデート
    - 影響範囲: アプリケーション全体の通信機能
 
-- [ ] **express および関連パッケージの更新**
+- [X] **express および関連パッケージの更新**
    - 現在: ~4.13.0
    - 脆弱性: 高（path-to-regexp、cookie、fresh、qs、debug、ms、finalhandler、serve-static など）
    - 対応: 4.21.x へアップデート（互換性を保ちながら）
