@@ -111,6 +111,11 @@ function jsVendor() {
 }
 
 function copyCss() {
+  // ハイライトJSのスタイルをコピー
+  gulp.src('node_modules/highlight.js/styles/**/*.css')
+    .pipe(gulp.dest(distPath + '/css/highlight'));
+    
+  // アプリケーションのCSSをコピー  
   return gulp.src('lib/app/css/**/*')
     .pipe(gulp.dest(distPath + '/css'));
 }

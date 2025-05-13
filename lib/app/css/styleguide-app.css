@@ -1,5 +1,3 @@
-$fa-font-path: '{{{appRoot}}}/assets/fonts';
-$fa-version: '4.2.0';
 @import 'components/font-awesome/font-awesome.css';
 /*@import 'bourbon';*/
 @import '_styleguide_custom_variables.css';
@@ -8,6 +6,9 @@ $fa-version: '4.2.0';
 @import 'styleguide_helper_elements.css';
 @import 'components/colorpicker.css';
 @import 'components/github.css';
+
+$fa-font-path: '{{{appRoot}}}/assets/fonts';
+$fa-version: '4.2.0';
 
 @define-mixin styleguide_custom_styles {
   /* User can re-define this mixin to create custom style overrides

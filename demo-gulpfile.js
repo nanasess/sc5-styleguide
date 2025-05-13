@@ -46,8 +46,12 @@ gulp.task('styleguide:applystyles', function() {
   ];
   
   // highlight.jsのスタイルをコピー
-  gulp.src('node_modules/highlight.js/src/styles/**/*.css')
+  gulp.src('node_modules/highlight.js/styles/**/*.css')
     .pipe(gulp.dest(outputPath + '/css/highlight'));
+  
+  // github.cssをハイライトスタイルとしてコピー
+  gulp.src('lib/app/css/components/github.css')
+    .pipe(gulp.dest(outputPath + '/css/components'));
     
   // アプリケーションスタイルの処理
   return gulp.src('lib/app/css/styleguide-app.css')
