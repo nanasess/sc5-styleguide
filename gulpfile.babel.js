@@ -16,8 +16,12 @@ var gulp = require('gulp'),
     rename = require('gulp-rename'),
     rimraf = require('gulp-rimraf'),
     ts = require('gulp-typescript'),
-    header = require('gulp-header'), // gulp-header を追加
-    sourcemaps = require('gulp-sourcemaps'), // gulp-sourcemaps を追加
+    header = require('gulp-header'),
+    sourcemaps = require('gulp-sourcemaps'),
+    through2 = require('through2'),
+    path = require('path'),
+    through2 = require('through2'),
+    path = require('path'),
     distPath = 'lib/dist',
     chalk = require('chalk'),
     outputPath = 'demo-output',
@@ -52,6 +56,19 @@ function jsVendor() {
     'node_modules/lodash/lodash.js', // Lodash を最初の方で読み込む
     'lib/app/js/vendor/**/*.js', // Keep existing vendor files
     'node_modules/highlight.js/lib/highlight.js',
+    // highlight.js言語モジュールを明示的に読み込む
+    'node_modules/highlight.js/lib/languages/bash.js',
+    'node_modules/highlight.js/lib/languages/javascript.js',
+    'node_modules/highlight.js/lib/languages/css.js',
+    'node_modules/highlight.js/lib/languages/xml.js',
+    'node_modules/highlight.js/lib/languages/json.js',
+    'node_modules/highlight.js/lib/languages/scss.js',
+    'node_modules/highlight.js/lib/languages/typescript.js',
+    'node_modules/highlight.js/lib/languages/yaml.js',
+    'node_modules/highlight.js/lib/languages/markdown.js',
+    'node_modules/highlight.js/lib/languages/php.js',
+    'node_modules/highlight.js/lib/languages/ruby.js',
+    'node_modules/highlight.js/lib/languages/python.js',
     'node_modules/angular/angular.js',
     'node_modules/angular-animate/angular-animate.js',
     'node_modules/angular-highlightjs/build/angular-highlightjs.js',
@@ -66,6 +83,27 @@ function jsVendor() {
   ])
     .pipe(plumber())
     .pipe(sourcemaps.init())
+    .pipe(through2.obj(function(file, enc, cb) {
+      // highlight.jsの言語ファイルを処理
+      const filePath = file.path;
+      if (filePath.includes('highlight.js/lib/languages/')) {
+        const fileName = path.basename(filePath, '.js');
+        const content = file.contents.toString();
+        
+        // 言語モジュールをグローバルに登録するためのコードを追加
+        const newContent = 
+          `// Register highlight.js language: ${fileName}\n` +
+          `(function() {\n` +
+          `  window.hljsLanguages = window.hljsLanguages || {};\n` +
+          `  var module = {};\n` +
+          `  ${content}\n` +
+          `  window.hljsLanguages['${fileName}'] = module.exports;\n` +
+          `})();\n`;
+        
+        file.contents = Buffer.from(newContent);
+      }
+      cb(null, file);
+    }))
     .pipe(concat('vendor.js'))
     .pipe(header('var global = window;\n')) // vendor.js の先頭に `var global = window;` を追加
     .pipe(sourcemaps.write('.'))
