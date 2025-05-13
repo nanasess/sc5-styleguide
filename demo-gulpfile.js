@@ -2,6 +2,8 @@ var gulp = require('gulp'),
   styleguide = require('./lib/styleguide'),
   postcss = require('gulp-postcss'),
   rename = require('gulp-rename'),
+  concat = require('gulp-concat'),
+  merge = require('merge-stream'),
   { series, parallel, watch } = require('gulp'), // Added
   source = 'lib/app/css/*.css',
   outputPath = 'demo-output',
@@ -43,6 +45,11 @@ gulp.task('styleguide:applystyles', function() {
     'lib/app/css/_styleguide_custom_variables.css'
   ];
   
+  // highlight.jsのスタイルをコピー
+  gulp.src('node_modules/highlight.js/src/styles/**/*.css')
+    .pipe(gulp.dest(outputPath + '/css/highlight'));
+    
+  // アプリケーションスタイルの処理
   return gulp.src('lib/app/css/styleguide-app.css')
     .pipe(postcss([
       require('postcss-import'),
@@ -108,8 +115,83 @@ gulp.task('styleguide:static', function() {
     .pipe(gulp.dest(outputPath + '/demo'));
 });
 
+// highlight.js のビルド
+gulp.task('styleguide:highlight', function() {
+  // highlight.js本体をコピー
+  const hljs = gulp.src([
+    'node_modules/highlight.js/lib/highlight.js'
+  ])
+  .pipe(gulp.dest(outputPath + '/js/highlight'));
+  
+  // 言語モジュールをコピー
+  const hljsLanguages = gulp.src([
+    'node_modules/highlight.js/lib/languages/bash.js',
+    'node_modules/highlight.js/lib/languages/javascript.js',
+    'node_modules/highlight.js/lib/languages/css.js',
+    'node_modules/highlight.js/lib/languages/xml.js',
+    'node_modules/highlight.js/lib/languages/json.js',
+    'node_modules/highlight.js/lib/languages/scss.js',
+    'node_modules/highlight.js/lib/languages/typescript.js',
+    'node_modules/highlight.js/lib/languages/yaml.js',
+    'node_modules/highlight.js/lib/languages/markdown.js',
+    'node_modules/highlight.js/lib/languages/php.js',
+    'node_modules/highlight.js/lib/languages/ruby.js',
+    'node_modules/highlight.js/lib/languages/python.js'
+  ])
+  .pipe(gulp.dest(outputPath + '/js/highlight/languages'));
+  
+  // サポートスクリプトをコピー
+  const hljsWrappers = gulp.src([
+    'lib/app/js/vendor/highlight-languages-wrapper.js',
+    'lib/app/js/vendor/highlight-languages.js'
+  ])
+  .pipe(gulp.dest(outputPath + '/js/highlight'));
+  
+  return merge(hljs, hljsLanguages, hljsWrappers);
+});
+
+// vendor.js のビルド
+gulp.task('styleguide:vendor', function() {
+  // highlight.jsのメインライブラリを最初に読み込む
+  const hljs = gulp.src([
+    'node_modules/highlight.js/lib/highlight.js'
+  ]);
+  
+  // 次に言語モジュールを読み込む
+  const hljsLanguages = gulp.src([
+    'node_modules/highlight.js/lib/languages/bash.js',
+    'node_modules/highlight.js/lib/languages/javascript.js',
+    'node_modules/highlight.js/lib/languages/css.js',
+    'node_modules/highlight.js/lib/languages/xml.js',
+    'node_modules/highlight.js/lib/languages/json.js',
+    'node_modules/highlight.js/lib/languages/scss.js',
+    'node_modules/highlight.js/lib/languages/typescript.js',
+    'node_modules/highlight.js/lib/languages/yaml.js',
+    'node_modules/highlight.js/lib/languages/markdown.js',
+    'node_modules/highlight.js/lib/languages/php.js',
+    'node_modules/highlight.js/lib/languages/ruby.js',
+    'node_modules/highlight.js/lib/languages/python.js'
+  ]);
+  
+  // 言語モジュールをグローバル変数にエクスポートするスクリプトと登録スクリプト
+  const hljsWrappers = gulp.src([
+    'lib/app/js/vendor/highlight-languages-wrapper.js',
+    'lib/app/js/vendor/highlight-languages.js'
+  ]);
+  
+  // その他のAngularモジュール
+  const angularModules = gulp.src([
+    'node_modules/angular-highlightjs/build/angular-highlightjs.js'
+  ]);
+  
+  // すべてのストリームを順番に結合
+  return merge(hljs, hljsLanguages, hljsWrappers, angularModules)
+    .pipe(concat('vendor.js'))
+    .pipe(gulp.dest(outputPath + '/js'));
+});
+
 // Define styleguide task using parallel
-const styleguideTask = parallel('styleguide:static', 'styleguide:generate', 'styleguide:applystyles');
+const styleguideTask = parallel('styleguide:static', 'styleguide:generate', 'styleguide:applystyles', 'styleguide:vendor', 'styleguide:highlight');
 gulp.task('styleguide', styleguideTask);
 
 
