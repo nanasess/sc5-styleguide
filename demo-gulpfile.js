@@ -144,14 +144,9 @@ gulp.task('styleguide:highlight', function() {
   ])
   .pipe(gulp.dest(outputPath + '/js/highlight/languages'));
   
-  // サポートスクリプトをコピー
-  const hljsWrappers = gulp.src([
-    'lib/app/js/vendor/highlight-languages-wrapper.js',
-    'lib/app/js/vendor/highlight-languages.js'
-  ])
-  .pipe(gulp.dest(outputPath + '/js/highlight'));
+  // サポートスクリプトは gulpfile.babel.js で処理されるため削除
   
-  return merge(hljs, hljsLanguages, hljsWrappers);
+  return merge(hljs, hljsLanguages);
 });
 
 // vendor.js のビルド
@@ -177,11 +172,7 @@ gulp.task('styleguide:vendor', function() {
     'node_modules/highlight.js/lib/languages/python.js'
   ]);
   
-  // 言語モジュールをグローバル変数にエクスポートするスクリプトと登録スクリプト
-  const hljsWrappers = gulp.src([
-    'lib/app/js/vendor/highlight-languages-wrapper.js',
-    'lib/app/js/vendor/highlight-languages.js'
-  ]);
+  // 言語モジュールをグローバル変数にエクスポートするスクリプトと登録スクリプトは gulpfile.babel.js で処理されるため削除
   
   // その他のAngularモジュール
   const angularModules = gulp.src([
@@ -189,7 +180,7 @@ gulp.task('styleguide:vendor', function() {
   ]);
   
   // すべてのストリームを順番に結合
-  return merge(hljs, hljsLanguages, hljsWrappers, angularModules)
+  return merge(hljs, hljsLanguages, angularModules)
     .pipe(concat('vendor.js'))
     .pipe(gulp.dest(outputPath + '/js'));
 });

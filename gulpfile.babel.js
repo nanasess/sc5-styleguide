@@ -54,7 +54,6 @@ function jsApp() {
 function jsVendor() {
   return gulp.src([
     'node_modules/lodash/lodash.js', // Lodash を最初の方で読み込む
-    'lib/app/js/vendor/**/*.js', // Keep existing vendor files
     'node_modules/highlight.js/lib/highlight.js',
     // highlight.js言語モジュールを明示的に読み込む
     'node_modules/highlight.js/lib/languages/bash.js',
@@ -69,6 +68,11 @@ function jsVendor() {
     'node_modules/highlight.js/lib/languages/php.js',
     'node_modules/highlight.js/lib/languages/ruby.js',
     'node_modules/highlight.js/lib/languages/python.js',
+    // highlight.js 言語ラッパーとレジストレーションファイル
+    'lib/app/js/vendor/highlight-languages-wrapper.js',
+    'lib/app/js/vendor/highlight-languages.js',
+    // その他のベンダーファイル
+    'lib/app/js/vendor/**/*.js', // Keep existing vendor files
     'node_modules/angular/angular.js',
     'node_modules/angular-animate/angular-animate.js',
     'node_modules/angular-highlightjs/build/angular-highlightjs.js',
