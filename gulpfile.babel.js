@@ -221,10 +221,9 @@ function devApplystyles(cb) { // Added cb for async completion
       require('postcss-custom-media'),
       require('postcss-preset-env')({
         features: {
-          customProperties: true,
-          nesting: false, // nestingプラグインを無効化して解析エラーを回避
-          calc: true, // calcプラグインを有効化してcalc()関数を処理
-          colorFunction: true // colorプラグインを有効化して変数を先に処理
+          'hwb-function': true,
+          'color-function': true,
+          'hsl-function': true
         }
       }),
       require('postcss-color-alpha'),

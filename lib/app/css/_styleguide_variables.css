@@ -1,4 +1,6 @@
 /* Main color definitions */
+/* ここに予め計算した値を設定 */
+/* $default-action-color-dark 変数は不要なので削除（hwb関数で直接指定するため） */
 $primary-color: #1C3849 !default;
 $secondary-color: #E4E4E4 !default;
 $tertiary-color: #F7FCF1 !default;
@@ -15,7 +17,7 @@ $header-background-color: $primary-color !default;
 $nav-background-color: $primary-color !default;
 
 $nav-button-color: $primary-color !default;
-$nav-button-text-color: color($default-action-color blackness(10%)) !default;
+$nav-button-text-color: hwb(189 9% 10%) !default; /* #1695A3 にホワイト9%、ブラック10%を適用 */
 $nav-button-ref-color: $secondary-color !default;
 $active-nav-button-color: $default-action-color !default;
 $active-nav-button-text-color: #FFFFFF !default;
@@ -23,14 +25,14 @@ $active-nav-button-ref-color: #FFFFFF !default;
 
 $nav-item-color: $secondary-color !default;
 $nav-item-text-color: $default-action-color !default;
-$nav-item-ref-color: color($default-action-color blackness(10%)) !default;
+$nav-item-ref-color: hwb(189 9% 10%) !default; /* #1695A3 にホワイト9%、ブラック10%を適用 */
 
 /* Header */
 $section-header-color: $primary-color !default;
 $section-header-ref-color: #FFFFFF !default;
 $section-header-text-color: $secondary-color !default;
 $section-header-source-text-color: rgba($secondary-color, 0.6) !default;
-$active-section-header-color: color($primary-color lightness(17%));
+$active-section-header-color: hsl(210 30% 7%); /* #1C3849 をlightness 17%に設定 */
 $active-section-header-ref-color: $section-header-ref-color !default;
 $active-section-header-text-color: $section-header-text-color !default;
 $active-section-header-source-text-color: rgba($primary-color, 0.6) !default;
@@ -72,7 +74,7 @@ $content-max-width: 68em !default;
 --nav-background-color: $primary-color !default;
 
 --nav-button-color: $primary-color !default;
---nav-button-text-color: color($default-action-color blackness(10%)) !default;
+--nav-button-text-color: hwb(189 9% 10%); /* #1695A3 にホワイト9%、ブラック10%を適用 */
 --nav-button-ref-color: $secondary-color !default;
 --active-nav-button-color: $default-action-color !default;
 --active-nav-button-text-color: #FFFFFF !default;
@@ -80,14 +82,14 @@ $content-max-width: 68em !default;
 
 --nav-item-color: $secondary-color !default;
 --nav-item-text-color: $default-action-color !default;
---nav-item-ref-color: color($default-action-color blackness(10%)) !default;
+--nav-item-ref-color: hwb(189 9% 10%); /* #1695A3 にホワイト9%、ブラック10%を適用 */
 
 /* Header */
 --section-header-color: $primary-color !default;
 --section-header-ref-color: #FFFFFF !default;
 --section-header-text-color: $secondary-color !default;
 --section-header-source-text-color: rgba($secondary-color, 0.6) !default;
---active-section-header-color: color($primary-color lightness(17%));
+--active-section-header-color: hsl(210 30% 7%); /* #1C3849 をlightness 17%に設定 */
 --active-section-header-ref-color: $section-header-ref-color !default;
 --active-section-header-text-color: $section-header-text-color !default;
 --active-section-header-source-text-color: rgba($primary-color, 0.6) !default;
