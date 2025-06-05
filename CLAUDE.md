@@ -124,6 +124,10 @@ SC5 Styleguideは、KSS記法を使用してCSS/SCSS/LESSスタイルシート�
 - デモサーバーはデフォルトでlocalhost:3000で動作
 - PlaywrightはE2Eテスト用にデモサーバーを自動起動するよう設定済み
 
+### タスク完了後にプロンプトの内容を保存
+
+- タスクが完了したら、[.github/prompts](.github/prompts) 以下に `YYYYMMhhmm.md` というファイル名で、プロンプトの履歴を保存してください。
+
 ## AngularJSからAngularへのマイグレーションプラン
 
 ### 現在の状態分析
@@ -133,35 +137,41 @@ SC5 Styleguideは、KSS記法を使用してCSS/SCSS/LESSスタイルシート�
 - **依存関係**: ngAnimate、colorpicker.module、hljs、LocalStorageModule、oc.lazyLoad、ngProgress、rt.debounce、duScroll
 - **アーキテクチャ**: サービス、コントローラー、ディレクティブを使用したコンポーネントベース
 
+### マイグレーション進捗状況（2025年6月）
+- **フェーズ1**: ✅ 完了 - Angular 11の基本設定とハイブリッドアプリケーションの構築
+- **フェーズ2.1**: ✅ 完了 - コアサービス（Socket、Styleguide、Variables）のAngular移行
+- **現在のステータス**: ハイブリッドアプリケーションとして正常動作中
+- **次のステップ**: ディレクティブとコントローラーの段階的移行
+
 ### フェーズ1: Angularマイグレーション準備
 **目標**: Angular 11.2.14へのマイグレーション（ngUpgrade最適化バージョン、最高の安定性）
 
 #### ステップ1.1: ビルドシステム更新
-- [ ] Angular CLI 11.2.19をインストールしangular.json設定を作成
-- [ ] TypeScriptを4.1.6に調整（Angular 11要件）
+- [x] Angular CLI 11.2.19をインストールしangular.json設定を作成
+- [x] TypeScriptを4.1.6に調整（Angular 11要件）
 - [ ] ハイブリッドアプリサポート用webpackを設定
-- [ ] Angularビルドプロセス用package.jsonスクリプトを更新
+- [x] Angularビルドプロセス用package.jsonスクリプトを更新
 
 #### ステップ1.2: Angularとマイグレーション依存関係のインストール
-- [ ] `@angular/core@11.2.14`、`@angular/common@11.2.14`、`@angular/platform-browser@11.2.14`をインストール
-- [ ] ハイブリッドアプリサポート用`@angular/upgrade@11.2.14`をインストール
-- [ ] UI-Router置き換え用`@angular/router@11.2.14`をインストール
-- [ ] Angular変更検出用`zone.js@0.11.8`をインストール
+- [x] `@angular/core@11.2.14`、`@angular/common@11.2.14`、`@angular/platform-browser@11.2.14`をインストール
+- [x] ハイブリッドアプリサポート用`@angular/upgrade@11.2.14`をインストール
+- [x] UI-Router置き換え用`@angular/router@11.2.14`をインストール
+- [x] Angular変更検出用`zone.js@0.11.8`をインストール
 
 #### ステップ1.3: ハイブリッドアプリケーションブートストラップ作成
-- [ ] Angularブートストラップ用main.tsを作成
-- [ ] AngularJSとAngularの両方を実行するハイブリッドアプリモジュールを実装
-- [ ] AngularJS使用向けAngularコンポーネントダウングレード用ngUpgradeを設定
-- [ ] デモ環境がエラーなしで起動することを確認
+- [x] Angularブートストラップ用main.tsを作成
+- [x] AngularJSとAngularの両方を実行するハイブリッドアプリモジュールを実装
+- [x] AngularJS使用向けAngularコンポーネントダウングレード用ngUpgradeを設定
+- [x] デモ環境がエラーなしで起動することを確認
 
 ### フェーズ2: コンポーネントマイグレーション（一つずつアプローチ）
 **目標**: 機能を維持しながら段階的にコンポーネントをマイグレーション
 
 #### ステップ2.1: サービスマイグレーション優先
-- [ ] `Socket.ts`サービスをAngularサービスにマイグレーション
-- [ ] `Styleguide.ts`サービスをAngularサービスにマイグレーション
-- [ ] `Variables.ts`サービスをAngularサービスにマイグレーション
-- [ ] ハイブリッド環境でのサービス互換性をテスト
+- [x] `Socket.ts`サービスをAngularサービスにマイグレーション
+- [x] `Styleguide.ts`サービスをAngularサービスにマイグレーション
+- [x] `Variables.ts`サービスをAngularサービスにマイグレーション
+- [x] ハイブリッド環境でのサービス互換性をテスト
 
 #### ステップ2.2: シンプルディレクティブマイグレーション
 - [ ] `hljs-init.ts`ディレクティブをAngularコンポーネントにマイグレーション
