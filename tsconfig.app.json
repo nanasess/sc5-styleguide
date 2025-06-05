@@ -11,6 +11,7 @@
     "lib/app/polyfills.ts"
   ],
   "include": [
+    "lib/app/**/*.ts",
     "lib/app/**/*.d.ts"
   ]
 }
