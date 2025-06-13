@@ -77,7 +77,7 @@
     "q": "~1.4.1",
     "run-sequence": "^2.2.1",
     "socket.io": "^4.7.5",
-    "through2": "~2.0.0",
+    "through2": "~4.0.2",
     "underscore": "^1.13.7",
     "vinyl": "~3.0.0",
     "vinyl-fs": "~4.0.0",
