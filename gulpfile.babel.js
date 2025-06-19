@@ -41,7 +41,10 @@ function jsApp() {
     'lib/app/js/directives/*.js',
     'lib/app/js/directives/*.ts',
     'lib/app/js/services/*.js',
-    'lib/app/js/services/*.ts'
+    'lib/app/js/services/*.ts',
+    'lib/app/js/bootstrap-hybrid.ts',
+    'lib/app/js/hybrid-app.module.ts',
+    'lib/app/js/upgrade-providers.ts'
   ])
   .pipe(plumber())
   .pipe(gulpIgnore.exclude('**/*.d.ts'))
