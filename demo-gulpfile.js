@@ -7,11 +7,11 @@ var gulp = require('gulp'),
   { series, parallel, watch } = require('gulp'), // Added
   source = 'lib/app/css/*.css',
   outputPath = 'demo-output',
-  { deleteAsync } = require('del'); // 修正: del v8以降はdeleteAsyncを使用
+  del = require('del'); // del v6.1.1を使用
 
 // クリーンアップタスク
 gulp.task('clean', function() {
-  return deleteAsync([
+  return del([
     'lib/app/js/components/*',
     'lib/dist/*',
     'demo-output/*'
