@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2015",
     "module": "commonjs",
     "lib": ["es2015", "dom"],
     "declaration": false,
@@ -13,7 +13,10 @@
     "checkJs": false,
     "noImplicitAny": false,
     "strictPropertyInitialization": false,
-    "strictNullChecks": false
+    "strictNullChecks": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "moduleResolution": "node"
   },
   "include": [
     "lib/app/js/**/*.ts",

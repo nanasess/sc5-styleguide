@@ -39,7 +39,9 @@ angular.module('sgApp')
       var sections = Styleguide.sections;
       if (sections && sections.data) {
         $scope.relatedSections = sections.data.filter(function(section: Section) {
-          return section.variables && section.variables.indexOf($scope.currentVariable) >= 0;
+          return section.variables && section.variables.some(function(variable: Variable) {
+            return variable.name === $scope.currentVariable;
+          });
         });
       } else {
         $scope.relatedSections = [];

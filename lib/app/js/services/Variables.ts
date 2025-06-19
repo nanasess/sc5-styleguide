@@ -1,31 +1,9 @@
 // Variables.ts
 // スタイルガイドの変数を管理するサービス
 
-interface Variable {
-  name: string;
-  file: string;
-  value: string;
-  line?: number;
-  fileHash?: string;
-  dirty?: boolean;
-}
+/// <reference path="../interfaces.d.ts" />
 
-interface VariablesService {
-  variables: Variable[];
-  socket: any;
-  variableMatches: (var1: Variable, var2: Variable) => boolean;
-  getLocalVar: (variable: Variable) => Variable | undefined;
-  getLocalIndex: (variable: Variable) => number | undefined;
-  getServerVar: (variable: Variable) => Variable | undefined;
-  refreshDirtyStates: () => boolean;
-  refreshValues: () => void;
-  resetLocal: () => void;
-  setSocket: (newSocket: any) => VariablesService;
-  addSocketListeners: () => void;
-  saveVariables: () => void;
-  getDirtyVariables: () => Variable[];
-  init: (socket: any) => void;
-}
+// Interfaceを削除（interfaces.d.tsで定義済み）
 
 angular.module('sgApp')
   .service('Variables', ['Styleguide', '$q', '$rootScope', 'Socket', 
@@ -34,10 +12,10 @@ angular.module('sgApp')
       $q: angular.IQService, 
       $rootScope: angular.IRootScopeService, 
       Socket: any
-    ): VariablesService {
+    ): IVariablesService {
 
       // Server data contains data initially load from the server
-      const _this: VariablesService = this;
+      const _this: IVariablesService = this;
       let serverData: Variable[] = [];
       
       // variables contain the actual data passed outside the service
@@ -163,7 +141,7 @@ angular.module('sgApp')
         });
       };
 
-      this.setSocket = function(newSocket: any): VariablesService {
+      this.setSocket = function(newSocket: any): IVariablesService {
         this.socket = newSocket;
         if (this.socket) {
           this.addSocketListeners();

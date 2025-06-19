@@ -6,12 +6,12 @@
 interface DesignScope extends ng.IScope {
   currentReference: {
     section: {
-      variables?: string[];
+      variables?: Variable[];
       reference: string;
     }
   };
   sections: {
-    data: any[];
+    data: Section[];
   };
   status: any;
   showRelated: boolean;
@@ -36,11 +36,11 @@ angular.module('sgApp')
             (ref === parentRef || ref.substring(0, ref.indexOf('.')) === parentRef);
         }
 
-        function getVariables(section: Section): string[] {
+        function getVariables(section: Section): Variable[] {
           return section.variables || [];
         }
 
-        function concat(a: string[], b: string[]): string[] {
+        function concat(a: Variable[], b: Variable[]): Variable[] {
           return a.concat(b);
         }
 
@@ -55,10 +55,16 @@ angular.module('sgApp')
           var relatedVariables = scope.currentReference.section.variables || [];
           if (scope.showRelated && relatedVariables.length === 0 && scope.sections.data) {
             parentRef = scope.currentReference.section.reference;
-            scope.relatedChildVariableNames = scope.sections.data.filter(isSubSection)
+            var childVariables = scope.sections.data.filter(isSubSection)
               .map(getVariables)
-              .reduce(concat, [])
-              .filter(unique as any);
+              .reduce(concat, []);
+            
+            // Variable配列から重複を除いた変数名の配列を作成
+            scope.relatedChildVariableNames = childVariables
+              .map(function(v) { return v.name; })
+              .filter(function(name, idx, arr) {
+                return name !== undefined && arr.indexOf(name) === idx;
+              });
           }
         });
 

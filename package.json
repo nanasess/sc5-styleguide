@@ -26,6 +26,10 @@
     "README.md"
   ],
   "dependencies": {
+    "@angular/common": "^17.3.0",
+    "@angular/core": "^17.3.0",
+    "@angular/platform-browser": "^17.3.0",
+    "@angular/upgrade": "^17.3.0",
     "angular": "^1.8.3",
     "angular-animate": "^1.8.3",
     "angular-bootstrap-colorpicker": "^3.0.32",
@@ -76,6 +80,7 @@
     "pug": "^3.0.3",
     "q": "~1.4.1",
     "run-sequence": "^2.2.1",
+    "rxjs": "^7.8.0",
     "socket.io": "^4.7.5",
     "through2": "~2.0.0",
     "underscore": "^1.13.7",
