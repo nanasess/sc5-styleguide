@@ -35,1661 +35,1082 @@ body.sg {
   border: 0;
 }
 
-/*
-Colors and typography
-
-This section describes base colors and typography
-
-Styleguide 1.0
-*/
-
-/*
-Main colors
-
-$primary-color - Primary color
-$secondary-color - Secondary color
-$primary-action-color - Primary button color
-$default-action-color - Default button color and link color
-$tertiary-color - Used for input hovers and hilights
-
-markup:
-<div style="background: {$modifiers};" class="styleguide-color">{$modifiers}</div>
-
-Styleguide 1.1
-*/
-
-/*
-Calculated colors
-
-.color_lighten - Lighter than default action color
-.color_darken - Darker than default action color
-
-markup:
-<div class="styleguide-color {$modifiers}"></div>
-
-Styleguide 1.1.1
-*/
-
-$default-action-light: lighten($default-action-color, $action-color-change);
-
-.color_lighten {
-  background-color: $default-action-light;
-}
-
-$default-action-dark: $default-action-color; /* 変数を使って後で色を適用 */
-
-.color_darken {
-  background-color: $default-action-dark;
-}
-
-/*
-Headings
-
-These are our headings
-
-markup:
-<h1 class="sg">Heading 1</h1>
-<p class="sg">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque massa ipsum, tincidunt vel convallis in, suscipit et risus. Morbi erat dolor, mattis at dignissim sed, feugiat sed lorem.
-<h2 class="sg">Heading 2</h2>
-<p class="sg">Mauris feugiat suscipit turpis, ut rhoncus lectus finibus sed. Etiam suscipit consectetur eros vitae venenatis.</p>
-<h3 class="sg">Heading 3</h3>
-<p class="sg">Ut leo ipsum, tincidunt vel mauris eget, convallis egestas justo. Nunc ligula neque, porta ac lorem id, ultrices dapibus dolor.</p>
-<h4 class="sg">Heading 4</h4>
-<p class="sg"> Phasellus interdum massa ante, ac placerat felis ultricies at. Fusce vulputate, odio sed convallis laoreet, tortor orci venenatis massa, a placerat ligula nisl vitae felis. In pellentesque ornare eleifend. Suspendisse potenti. Quisque eget mauris enim.</p>
-<h5 class="sg">Heading 5</h5>
-
-Styleguide 1.2
-*/
-
-h1.sg,
-h2.sg,
-h3.sg,
-h4.sg,
-h5.sg {
-  @mixin default-font;
-  font-family: var(--primary-font);
-  font-family: $primary-font;
-  font-weight: normal;
-  font-style: normal;
-  line-height: 1.2;
-  margin: 1.414em 0 .5em;
-  color: #444;
-}
-
-h1.sg {
-  font-size: 3.157em;
-
-  margin-top: .5em;
-}
-
-h2.sg {
-  font-size: 2.369em;
-}
-
-h3.sg {
-  font-size: 1.777em;
-}
-
-h4.sg {
-  font-size: 1.333em;
-}
-
-h4.sg,
-h5.sg {
-  font-weight: 500;
-}
-
-/*
-Buttons and inputs
-
-Links, buttons, input boxes etc.
-
-Styleguide 2.0
- */
-
-/*
-Links
-
-Link styles used in the styleguide
-
-.sg - Normal link
-:hover - Hover
-
-markup:
-<a href="#" class="sg {$modifiers}">Link text</a>
-
-Styleguide 2.1
- */
-
-/* TODO
-:active - Active
-:visited - Visited
-*/
-
-a.sg {
-  @mixin default-font;
-  display: inline;
-  cursor: pointer;
-  text-decoration: none;
-  color: var(--default-action-color);
-  color: $default-action-color;
-}
-
-a.sg:hover {
-  color: $default-action-light;
-}
-
-a.sg:active {
-  color: $default-action-dark;
-}
-
-p.sg {
-  @mixin default-font;
-  line-height: 1.5em;
-  margin-top: 1.3em;
-  margin-bottom: 1.3em;
-  color: #333;
-}
-
-code.sg,
-pre.sg {
-  @mixin default-font;
-  font-family: 'Lucida Console', Monaco, monospace;
-  font-size: 1.0em;
-  white-space: pre-wrap;
-}
-
-li.sg {
-  @mixin default-font;
-  margin-left: 1em;
-  padding: .2em 0;
-}
-
-strong.sg {
-  @mixin default-font;
-  font-weight: 700;
-}
-
-small.sg {
-  @mixin default-font;
-  color: #888;
-}
-
-/*
-Buttons
-
-Button styles used in the styleguide
-
-default - Default button
-.sg-primary - Primary button
-:disabled - Disabled button
-
-markup:
-<button class="sg {$modifiers}">Button text</button>
-
-Styleguide 2.3
- */
-
-
-button.sg {
-  @mixin default-font;
-  display: inline;
-
-  margin-right: 8px;
-  padding: 8px;
-
-  cursor: pointer;
-
-  color: white;
-  border-radius: 5px;
-  background-color: var(--default-action-color);
-  background-color: $default-action-color;
-
-  &:hover {
-    background-color: color($default-action-color lightness($action-color-change));
-  }
-  &:active {
-    background-color: color($default-action-color blackness($action-color-change));
-  }
-
-  &.sg-primary {
-    color: white;
-    background-color: var(--primary-action-color);
-    background-color: $primary-action-color;
-    &:hover {
-      background-color: color($primary-action-color lightness($action-color-change));
-    }
-    &:active {
-      background-color: color($primary-action-color blackness($action-color-change));
-    }
-  }
-
-  &:disabled {
-    cursor: default;
-
-    color: #999;
-    background-color: var(--secondary-color);
-    background-color: $secondary-color;
-  }
-}
-
-/*
-Input boxes
-
-Styles for input boxes
-
-default - Default input
-:hover - Hovered input
-
-markup:
-<input class="sg {$modifiers}" type="text" value="Default text box">
-<input class="sg {$modifiers}" type="text" placeholder="Default placeholder">
-<input class="sg {$modifiers}" type="search" value="Search text box">
-
-Styleguide 2.4
- */
-
-/* TODO
-:focus - Focused input
-:active - Active input
-*/
-
-input.sg {
-  @mixin default-font;
-  font-family: var(--secondary-font);
-  font-family: $secondary-font;
-  font-weight: 300;
-
-  margin: 8px;
-  padding: 8px;
-  padding: .5em;
-
-  border: 1px solid var(--secondary-color);
-  border: 1px solid $secondary-color;
-
-  &:focus {
-    background-color: var(--tertiary-color);
-    background-color: $tertiary-color;
-    border: 1px solid $secondary-color;
-  }
-}
-
-/*
-Structure
-
-Styleguide 3.0
- */
-
-/*
-Grid
-
-Our grid is built using Bourbon's Neat grid framework. We use the default
-12 column layout.
-
-Styleguide 3.1
- */
-
-/*
-Main layout
-
-.sg.wrapper acts as a container for .sg.nav and .sg.body
-
-markup:
-<header class="sg sg-header styleguide-grid-unit">Header</header>
-<div class="sg sg-wrapper styleguide-grid-unit">
-  <div class="sg sg-body styleguide-grid-unit">Body</div>
-</div>
-
-Styleguide 3.1.1
- */
-
-.sg.full-height {
+/* Structure */
+.sg.wrapper {
+  position: relative;
+  overflow: hidden;
   min-height: 100vh;
 }
 
-.sg.sg-wrapper {
-  align-items: stretch;
-  display: flex;
+.sg.wrapper-light {
+  padding-bottom: $footer-padding + $footer-logo-height;
+}
+
+.sg.section-partials,
+.sg.design-manual {
+  min-height: 100vh;
+}
+
+/* Content wrapper */
+.sg.wrapper .sg.pusher {
   position: relative;
-  overflow: hidden;
-  max-width: $content-max-width;
+  left: 0;
+  z-index: 1;
+  min-height: 100%;
+  height: 100%;
+  background: #E8E8E8;
+  -webkit-transition: -webkit-transform 0.5s;
+  transition: transform 0.5s;
+  &.pushed {
+    -webkit-transform: translateX($primary-action-color);
+    -ms-transform: translateX($primary-action-color);
+    transform: translateX($primary-action-color);
+  }
+}
+
+.sg.body {
+  position: relative;
   margin: 0 auto;
-  padding: $wrapper-vertical-padding $content-margin $wrapper-vertical-padding $min-content-margin;
-  @media (--mobile) {
-    display: block;
-    padding: 0;
-  }
-  &.designerToolVisible {
-    margin-right: var(--designer-tool-width);
-    margin-right: $designer-tool-width;
-  }
-
-  .sg.sg-body {
-    display: inline-block;
-    width: 70%;
-    min-height: 680px;
-    height: 100%;
-    @media (--mobile) {
-      padding: 0.25em;
-      padding-top: 30px;
-      width: 100%;
-    }
-    // Remove top margin from first header in markdown
-    .sg.sg-heading:nth-of-type(1) {
-      margin-top: 0;
-      padding-top: 0;
-    }
-  }
-
-  .sg.full-width {
-    width: 100%;
-  }
-
-  .sg.sg-side-nav {
-    display: inline-block;
-    max-width: 0;
-    opacity: 0;
-    overflow-y: auto;
-    transition: max-height .4s ease-in;
-    transition: max-width .4s ease-in;
-    @media (--mobile) {
-      max-height: 1000px;
-      width: 100%;
-      max-width: 100%;
-      opacity: 1;
-      padding-top: 30px;
-      z-index: 99999;
-      background: #8b8b8b;
-      transition: all .4s cubic-bezier(0.820, 0.000, 0.100, 1);
-    }
-
-    &--toggle {
-      opacity: 1;
-      max-width: 30%;
-      z-index: 99999;
-      @media (--mobile) {
-        max-height: 0;
-        width: 100%;
-        max-width: 100%;
-        padding: 0;
-      }
-    }
-
-    .sg.option {
-      text-align: center;
-      a {
-        color: white;
-      }
-    }
-
-    li {
-      list-style: none;
-      @media (--mobile) {
-        background: #8b8b8b;
-        border-bottom: 1px solid #d4d4d4;
-      }
-    }
-
-    & .sg-nav-section {
-      list-style: none;
-      margin: 2em 0 0 0;
-      @media (--mobile) {
-        margin: 0;
-      }
-      padding: 0;
-      background: rgba(#fff, 1);
-      & .sg-nav-subsection:before {
-        position: absolute;
-        top: 0;
-        left: -1em;
-
-        display: block;
-
-        width: 5px;
-        height: 100%;
-
-        content: '';
-
-        background: lighten($primary-color, 75%);
-
-        transition: all .4s ease-out;
-      }
-    }
-
-    & .sg-nav-subsection .plus {
-      &:before {
-        position: absolute;
-        margin-top: 0;
-        margin-left: -1em;
-        display: block;
-
-        width: 5px;
-        height: 100%;
-
-        content: '+';
-
-        background: lighten($primary-color, 75%);
-
-        transition: all .4s ease-out;
-      }
-    }
-
-    & .sg-nav-subsection .minus {
-      &:before {
-        position: absolute;
-        margin-top: 0;
-        margin-left: -1em;
-        display: block;
-
-        width: 5px;
-        height: 100%;
-
-        content: '-';
-
-        background: lighten($primary-color, 75%);
-
-        transition: all .4s ease-out;
-      }
-    }
-
-    & .sg-nav-section li {
-      margin-bottom: .3em;
-      @media (--mobile) {
-        margin-bottom: 0;
-      }
-    }
-
-    & .sg-nav-section li a {
-      @media (--mobile) {
-        color: $header-text-color;
-        margin-left: 5px;
-      }
-    }
-
-    & .sg-nav-section > li > a {
-      font-family: $secondary-font;
-      line-height: 2em;
-
-      position: relative;
-
-      display: block;
-
-      padding: .5em;
-
-      &:before {
-        position: absolute;
-        top: 0;
-        left: -1em;
-
-        display: block;
-
-        width: 5px;
-        height: 100%;
-
-        content: '';
-
-        background: lighten($primary-color, 75%);
-
-        transition: all .4s ease-out;
-      }
-
-      &:after {
-        position: absolute;
-        bottom: -.25em;
-        left: 0;
-
-        display: block;
-
-        width: 100%;
-        height: 1px;
-
-        content: '';
-
-        background: rgba($secondary-color, 1);
-      }
-
-      &:hover,
-      &.active {
-        &:before {
-          background: $primary-color;
-        }
-      }
-    }
-    .sg-nav-subsubsection {
-      padding-left: 10px;
-    }
-    .sg-nav-subsection {
-      padding-left: 30px;
-      & li {
-        border: none;
-        & a {
-          line-height: 2em;
-          position: relative;
-          display: block;
-          color: #23485f;
-        }
-      }
-    }
-  }
-
-  .sg.side-nav-toggle {
-    font-family: var(--secondary-font);
-    font-style: normal;
-    position: absolute;
-    top: 2.0em;
-    cursor: pointer;
-    color: rgba(var(--primary-color), .2);
-    border-radius: 5px;
-    user-select: none;
-    transition: color .3s ease-in;
-    display: block;
-    @media (--mobile) {
-      display: none;
-    }
-
-    &:before {
-      position: absolute;
-      top: -1.5em;
-      width: 10em;
-      content: 'Toggle navigation';
-      opacity: 0;
-      color: rgba($primary-color, .2);
-      transition: opacity .3s ease-in;
-    }
-
-    &:hover {
-      color: rgba($primary-color, .7);
-      &:before {
-        opacity: 1;
-      }
-    }
-  }
-}
-/*
-Header and footer
-
-The header and footer are included in all styleguide pages
-
-Styleguide 3.2
- */
-
-/*
-Header
-
-Header bar description
-
-default - Default header
-.error - Error state
-
-markup:
-<header class="sg sg-header {$modifiers}">
-  <div class="sg-inner">
-    <div class="sg-title">
-      <h1>Title</h1>
-    </div>
-  </div>
-</header>
-
-Styleguide 3.2.1
- */
-
-
-.sg.sg-header {
-  width: 100%;
-  padding: 0;
-  color: #fff;
-  background: var(--header-background-color);
-  background: $header-background-color;
-
-  pre {
-    clear: both;
-  }
-
-  .sg-inner {
-    box-sizing: border-box;
-    padding: 0 var(--min-content-margin) 0 var(--min-content-margin);
-    padding: 0 $min-content-margin 0 $min-content-margin;
-    height: 100%;
-    padding-right: calc(var(--content-margin) - var($min-content-margin));
-    padding-right: calc($content-margin - $min-content-margin);
-    max-width: var(--content-max-width);
-    max-width: $content-max-width;
-    margin-left: auto;
-    margin-right: auto;
-
-    @media (--mobile) {
-      padding-right: 0;
-    }
-
-    &:after {
-      visibility: hidden;
-      display: block;
-      font-size: 0;
-      content: " ";
-      clear: both;
-      height: 0;
-    }
-  }
-
-  .sg-title {
-    min-height: 70px;
-    float: left;
-    padding-bottom: 20px;
-    white-space: nowrap;
-    padding: 0;
-    height: 100%;
-
-    h1 {
-      font-family: var(--secondary-font);
-      font-family: $secondary-font;
-      font-style: normal;
-      font-size: 1.8em;
-      font-weight: 100;
-      margin: 0;
-      color: var(--header-text-color);
-      color: $header-text-color;
-      line-height: var(--header-height);
-      line-height: $header-height;
-
-      span {
-        font-size: .9em;
-      }
-    }
-  }
-
-  &.error {
-    height: auto;
-    background-color: #d2301c;
-  }
-
-  &.designerToolVisible .sg-inner {
-    margin-right: var(--designer-tool-width);
-    margin-right: $designer-tool-width;
-  }
-
-  @media (--mobile) {
-    height: auto;
-  }
-
-  .sg.sg-search-container {
-
-    @media (--mobile) {
-      clear: both;
-      display: flex;
-    }
-    .sg-hamburger {
-      display: none;
-      float: left;
-      cursor: pointer;
-      position: relative;
-
-      @media (--mobile) {
-        display: block;
-        padding-top: 2px;
-        padding-bottom: 3px;
-      }
-
-      &-item {
-        position: relative;
-        width: 40px;
-        height: 4px;
-        background: white;
-        margin-bottom: 9px;
-        top: 0;
-        transition: transform 0.15s ease-in-out, top 0.1s ease-in-out 0.2s, opacity 0.25s ease-in-out 0.1s;
-        transform-origin: center;
-      }
-
-      &-active {
-        .sg-hamburger-item {
-          transition: transform 0.15s ease-in-out 0.2s, top 0.1s ease-in-out, opacity 0.25s ease-in-out;
-        }
-        .top {
-          top: 13px;
-          transform: rotate(135deg);
-        }
-        .middle {
-          opacity: 0;
-          transform: rotate(135deg);
-        }
-        .bottom {
-          top: -13px;
-          transform: rotate(225deg);
-        }
-      }
-    }
-
-    .sg.sg-search-field {
-      box-sizing : border-box;
-      float: right;
-      @media (--mobile) {
-        margin-top: 0;
-        margin-left: 0;
-        margin-right: 40px;
-        float: none;
-        width: 100%;
-      }
-    }
-  }
-  .sg.side-nav-search .sg.sg-search-field {
-    @media (--mobile) {
-      margin-left: 13px;
-    }
-  }
-}
-
-/*
-Footer
-
-markup:
-<footer class="sg sg-footer">
- <div class="sg sg-content">
-   <span class="sg">
-     Footer text. <a class="sg" target="_blank" href="http://styleguide.sc5.io/">Footer link</a>.
-   </span>
- </div>
-</footer>
-
-Styleguide 3.2.2
- */
-
-.sg.sg-footer {
-  @mixin default-font;
-  box-sizing: border-box;
+  background: white;
+  z-index: 99;
+  -webkit-transition: -webkit-transform 0.5s;
+  transition: transform 0.5s;
+  font-family: $primary-font;
+  font-size: 14px;
+  line-height: 20px;
+  color: #333;
   font-weight: 300;
-
-  padding: var(--footer-padding);
-  padding: $footer-padding;
-
-  text-align: center;
-  border-top: 2px solid #333;
-  margin: 0 20px 0 20px;
-  background: #FFF;
+  padding-bottom: 150px;
+  min-height: calc(100vh - 127px);
 }
 
-.sg.sg-footer .sg-logo {
-  width: 42px;
-  height: var(--footer-logo-height);
-  height: $footer-logo-height;
-  margin-top: -5px;
-
-  vertical-align: middle;
+.sg.body a.sg {
+  color: $default-action-color;
 }
 
-/*
-Navigation
-
-Navigation provides navigation menu between different sections
-
-markup:
-<ul class="sg sg-top-nav-menu">
-  <li>
-    <a><span class="ref">1.0</span> First section</a>
-  </li>
-  <li>
-    <a><span class="ref">2.0</span> Second section</a>
-  </li>
-  <li>
-    <a><span class="ref">3.0</span> Third section</a>
-  </li>
-</ul>
-
-Styleguide 3.3
- */
-
-/*
-Navigation item
-
-default - Default state
-.active - Active item
-.sub-active - Item with active subsection
-:hover - Hover
-
-markup:
-<li>
-  <a class="{$modifiers}"><span class="ref">1.0</span> First section</a>
-</li>
-
-sg-wrapper:
-<ul class="sg sg-top-nav-menu">
-<sg-wrapper-content/>
-</ul>
-
-Styleguide 3.3.1
- */
-
-.sg.sg-top-nav {
-  display: none;
-  clear: both;
-  background-color: var(--nav-background-color);
-  background-color: $nav-background-color;
-  z-index: 8000;
-  width: 100%;
+.sg a:hover {
+  color: $primary-action-color;
 }
 
-.sg.sg-nav-visible {
-  display: block;
+.sg pre,
+code {
+  background: white;
+  border: 1px solid $tertiary-color;
+  border-radius: 4px;
+  padding: 1px 3px;
 }
 
-.sg.sg-top-nav-menu {
-  padding: 0 var(--min-content-margin) 0 var(--min-content-margin);
-  padding: 0 $min-content-margin 0 $min-content-margin;
-  margin: 0;
-  max-width: $content-max-width;
-  margin-left: auto;
-  margin-right: auto;
-  list-style-type: none;
-
-  .designerToolVisible & {
-    margin-right: var(--designer-tool-width);
-    margin-right: $designer-tool-width;
-  }
-
-  li {
-    @mixin default-font;
-    background-color: var(--nav-button-color);
-    background-color: $nav-button-color;
-    float:left;
-  }
-  li a {
-    padding: 0 20px;
-    display: block;
-    text-decoration: none;
-  }
-  & > li > a {
-    color: var(--nav-button-text-color);
-    color: $nav-button-text-color;
-
-    &:hover, &.active {
-      color: var(--active-nav-button-text-color);
-      color: $active-nav-button-text-color;
-      background: var(--active-nav-button-color);
-      background: $active-nav-button-color;
-    }
-    &.sub-active {
-       border: var(--active-nav-button-color) solid;
-       border: $active-nav-button-color solid;
-       border-width: 0 0 3px;
-       line-height: calc(var(--menu-height) - 3px);
-       line-height: calc($menu-height - 3px);
-    }
-    line-height: var(--menu-height);
-    line-height: $menu-height;
-    .sg-ref {
-      color: $nav-button-ref-color;
-    }
-  }
-
-  /* Submenu */
-  ul {
-    z-index: 8000;
-    position: absolute;
-    left: -9999px;
-    top: -9999px;
-    list-style-type: none;
-  }
-  li:hover {
-    position:relative;
-    // Button should still have background color when sub-menu item is hovered
-    & > a {
-      color: var(--active-nav-button-text-color);
-      color: $active-nav-button-text-color;
-      background: var(--active-nav-button-color);
-      background: $active-nav-button-color;
-    }
-    ul {
-      left: 0px;
-      top: $menu-height;
-      padding: 0px;
-    }
-    .sg-ref {
-      color: var(--active-nav-button-ref-color);
-      color: $active-nav-button-ref-color;
-    }
-  }
-
-  li:hover ul li a, li ul li a.active {
-    line-height: var(--sub-menu-height);
-    line-height: $sub-menu-height;
-    background: var(--nav-item-color);
-    background: $nav-item-color;
-    color: var(--nav-item-text-color);
-    color: $nav-item-text-color;
-    display: block;
-    width: 260px;
-    border-top: 1px solid white;
-    .sg-ref {
-      color: var(--nav-item-ref-color);
-      color: $nav-item-ref-color;
-    }
-  }
-
-  a:hover, a.active, li:hover ul li a:hover, li ul li a.active {
-    background: var(--active-nav-button-color);
-    background: $active-nav-button-color;
-    color: var(--active-nav-button-text-color);
-    color: $active-nav-button-text-color;
-    .sg-ref {
-      color: $active-nav-button-ref-color;
-    }
-  }
-
-  @media (--mobile) {
-    padding: 0;
-    li {
-      float: none;
-    }
-  }
-
-  &:after {
-    visibility: hidden;
-    display: block;
-    font-size: 0;
-    content: " ";
-    clear: both;
-    height: 0;
-  }
+/* Fonts */
+%fonts {
+  font-family: proxima-nova, "Helvetica Neue", Helvetica, Arial, sans-serif !important;
 }
 
-.sg.toggle {
-  font-family: var(--secondary-font);
-  font-family: $secondary-font;
-  font-weight: 300;
+h1.sg,
+.sg.heading {
+  @extend %fonts;
+  font-family: $primary-font;
+  font-size: 2.6em;
+  font-weight: 100;
+  margin: 1.414em 0 0.5em;
+  color: $primary-color;
+  text-transform: capitalize;
+}
 
-  cursor: pointer;
+h2.sg {
+  font-family: $primary-font;
+  font-size: 2.2em;
+  font-weight: 100;
+  margin: 1.414em 0 0.5em;
+  color: lighten($primary-color, 10);
+}
 
-  color: var(--secondary-color);
+h3.sg {
+  font-family: $primary-font;
+  font-size: 1.8em;
+  font-weight: 200;
+  margin: 1.414em 0 0.5em;
   color: $secondary-color;
-
-  &.all-markup {
-    margin: 0;
-    padding: 1em;
-  }
-  &.hide-markup {
-    position: absolute;
-    top: 0;
-    right: 0;
-
-    padding: 1em;
-  }
-  &.show-markup {
-    display: block;
-
-    padding: 0;
-  }
 }
 
-/*
-Sections header
-
-Sections can be used to structure content. Sections are generated from
-KSS reference numbers.
-
-Markup:
-<header class="sg sg-section-header">
-  <h1 class="sg"><span class="sg-reference-number">1.0</span> Section title </h1>
-</header>
-
-Styleguide 3.4
- */
-
-.sg.sg-section-header {
-  @mixin default-font;
-  background-color: var(--section-header-color);
-  background-color: $section-header-color;
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-
-  a {
-    text-decoration: none;
-    display: block;
-  }
-
-  a:hover {
-    i.fa {
-      color: var(--secondary-color);
-      color: $secondary-color;
-    }
-  }
-
-  h1 {
-    color: var(--section-header-text-color);
-    color: $section-header-text-color;
-    padding: 13px;
-    margin: 0;
-    font-size: 1.777em;
-
-    .sg-reference-number {
-      color: var(--section-header-ref-color);
-      color: $section-header-ref-color;
-    }
-
-    .sg-section-source {
-      float: right;
-      color: var(--section-header-source-text-color);
-      color: $section-header-source-text-color;
-      font-size: 60%;
-      line-height: 1.777em;
-    }
-
-  }
-
-  .sg-section-source-ref {
-    float: right;
-    color: var(--section-header-source-text-color);
-    color: $section-header-source-text-color;
-    font-size: 60%;
-    line-height: 1.777em;
-    margin-left: 0.3em;
-  }
-
-  i.fa {
-    font-size: 14px;
-    padding: 0.4em 0.7em;
-    float: right;
-    color: $section-header-text-color.6;
-    transition: all .4s ease-out;
-  }
-
-  /* Active header styles */
-  .sg.designerToolVisible .sg.section.active:not(.main) & {
-    background-color: var(--active-section-header-color);
-    background-color: $active-section-header-color;
-    h1 {
-      color: var(--active-section-header-text-color);
-      color: $active-section-header-text-color;
-      .sg-reference-number {
-        color: $active-section-header-ref-color;
-      }
-
-      .sg-section-source {
-        color: var(--active-section-header-source-text-color);
-        color: $active-section-header-source-text-color;
-      }
-    }
-    i.fa {
-      color: $active-section-header-text-color.6;
-    }
-  }
-
+h4.sg {
+  font-family: $primary-font;
+  font-size: 1.4em;
+  font-weight: 300;
+  margin: 1.414em 0 0.5em;
 }
 
-.sg.sg-section.main {
-  .sg-section-header {
-    background-color: transparent;
-
-    h1 {
-      padding-top: 0;
-      font-size: 2.369em;
-      color: #333;
-
-      .sg-section-source {
-        color: var(--main-section-header-source-text-color);
-        color: $main-section-header-source-text-color;
-      }
-    }
-
-    i.fa {
-      display: none;
-    }
-  }
-
-  .sg-reference-number {
-    display: none;
-  }
-
-  .sg.sg-section-partial, .sg.sg-section-partial:last-child {
-    padding-top: 0;
-    padding-bottom: 0;
-    border: none;
-  }
+p.sg {
+  font-family: $primary-font;
+  font-weight: 300;
+  margin-bottom: 1.3em;
 }
 
-/*
-Sections blocks
-
-Sections can be used to structure content. Sections are generated from
-KSS reference numbers.
-
-Markup:
-<section class="sg sg-section">
-  <div class="sg sg-section-partial">
-    <p class="sg">Section description</p>
-    <ul class="sg modifier-list">
-      <li class="sg-item"><strong>.modifier1</strong> - <span>Modifier1 description</span></li>
-      <li class="sg-item"><strong>.modifier2</strong> - <span>Modifier2 description</span></li>
-      <li class="sg-item"><strong>.modifier3</strong> - <span>Modifier3 description</span></li>
-    </ul>
-  </div>
-  <div class="sg sg-section-partial">
-    <div class="sg sg-label">
-      <a ng-href="/section/3.5-0/fullscreen" target="_blank">
-        <span class="sg name">.modifier1</span><i class="fa fa-arrows-alt"></i>
-      </a>
-    </div>
-    <div>
-      <div style="width: 100px; height: 100px; background: #1695A3;"></div>
-    </div>
-  </div>
-  <div class="sg sg-section-partial">
-    <div class="sg sg-label">
-      <a ng-href="/section/3.5-1/fullscreen" target="_blank">
-        <span class="sg name">.modifier2</span><i class="fa fa-arrows-alt"></i>
-      </a>
-    </div>
-    <div>
-      <div style="width: 100px; height: 100px; background: #ACF0F2;"></div>
-    </div>
-  </div>
-  <div class="sg sg-section-partial">
-    <div class="sg sg-label">
-      <a ng-href="/section/3.5-2/fullscreen" target="_blank">
-        <span class="sg name">.modifier3</span><i class="fa fa-arrows-alt"></i>
-      </a>
-    </div>
-    <div>
-      <div style="width: 100px; height: 100px; background: #EB7F00;"></div>
-    </div>
-  </div>
-  <div class="sg sg-section-partial sg-code-listing">
-    <div class="sg sg-label">
-      <a target="_blank">
-        <i class="fa fa-close"></i>
-      </a>
-    </div>
-    <pre class="sg">
-      <code hljs hljs-language="html" class="html"><div style="width: 100px; height: 100px; background: {$modifier};"></div></code>
-    </pre>
-  </div>
-</section>
-
-Styleguide 3.5
- */
-
-.sg.sg-section {
-  margin-bottom: 20px;
-
-  .sg.sg-section-partial {
-    position: relative;
-
-    overflow: auto;
-
-    padding: 1em;
-
-    border: 1px solid var(--secondary-color);
-    border: 1px solid $secondary-color;
-    border-bottom: none;
-    background: #fff;
-    width: 100%;
-  }
-
-  .sg.sg-section-partial:last-child {
-    border-bottom: 1px solid $secondary-color;
-  }
-
-  .sg.sg-code-listing {
-    padding: 0;
-    background-color: #f8f8f8;
-
-    pre {
-      padding: 1em;
-    }
-
-    .hljs {
-      overflow-y: auto;
-
-      max-height: 400px;
-    }
-
-    a.sg-show-section {
-      display: block;
-
-      padding: .8em 1.2em;
-
-      cursor: pointer;
-    }
-  }
-  .sg.modifier-list {
-    @mixin default-font;
-    list-style: none;
-    padding: 1em;
-    > .sg-item {
-      line-height: 1.8em;
-      > strong {
-        font-weight: bold;
-      }
-    }
-  }
+p.sg.intro {
+  font-family: $primary-font;
+  font-size: 1.1em;
+  font-weight: 300;
+  margin-bottom: 1.3em;
+  color: #888;
 }
 
-.sg.sg-body section.sg.sg-section:last-of-type {
-  margin-bottom: 0;
-  min-height: calc(100vh - #{$header_height} - #{$footer-logo-height} - #{$wrapper-vertical-padding});
+li.sg {
+  font-family: $primary-font;
+  padding: 0.75em 0 0.75em 0.5em;
 }
 
-.sg.designerToolVisible .sg.sg-section.active:not(.main) .sg.sg-section-header {
-  background-color: var(--primary-color);
-  background-color: color($primary-color lightness(17%));
-}
-
-.sg.sg-label {
-  @mixin default-font;
-  position: absolute;
-  z-index: 7000;
-  top: 0;
-  right: 0;
-
-  border: 1px solid var(--secondary-color);
-  border: 1px solid $secondary-color;
-  border-top: none;
-  border-right: none;
-  background: #fff.9;
-
-  span,
-  p {
-    @mixin default-font;
-    font-weight: 500;
-
-    display: inline;
-
-    padding: 0 .8em 0 0;
-
-    text-decoration: none;
-  }
-
-  a {
-    @mixin default-font;
-    display: inline-block;
-
-    padding: .4em .7em;
-
-    cursor: pointer;
-    text-decoration: none;
-  }
-
-  a:hover {
-    i.fa {
-      color: $primary-color.7;
-      &:after {
-        opacity: 1;
-      }
-    }
-  }
-
-  i.fa {
-    cursor: pointer;
-
-    color: $primary-color.2;
-
-    transition: all .4s ease-out;
-  }
-}
-
-/*
-Variable sections header
-
-Header for listing all sections which use the selected variable
-
-markup:
-<h2 class="sg sg-heading">
-  Sections using variable
-  <span class="sg sg-current-variable">variable name</span>
-</h2>
-
-Styleguide 3.6.
- */
-
-.sg.sg-heading .sg-current-variable {
-  display: inline;
-  color: #009926;
+.sg strong {
   font-weight: 700;
 }
 
-/*
-Designer tool
+.sg small,
+.sg.small {
+  font-size: 0.75em;
+}
 
-Styles for styleguide designer tool
-
-Styleguide 4.0
- */
-
-/*
-Variable listing
-
-markup:
-<div class="sg sg-design-content" ng-init="variables = [
-     {name: 'example-variable', value: '#00FF00', 'file': 'filename.scss'},
-     {name: 'edited-variable', value: '#FF0000', 'file': 'filename.scss', dirty: true}
-  ]">
-  <h3 class="sg">All variables</h3>
-  <ul>
-    <li ng-repeat="variable in variables">
-      <div sg-variable></div>
-    </li>
-  </ul>
-</div>
-
-Styleguide 4.1
- */
-
-
-.sg.sg-design {
+/* Top header style */
+header.sg {
   position: fixed;
   top: 0;
-  left: 100%;
-
-  width: var(--designer-tool-width);
-  width: $designer-tool-width;
-  height: 100%;
-
-  z-index: 9000;
-
-  @media (--mobile) {
-    width: var(--designer-tool-width-mobile);
-    width: $designer-tool-width-mobile;
+  left: 0;
+  width: 100%;
+  background: $header-background-color;
+  z-index: 10000;
+  color: $header-text-color;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  font-size: 1.3em;
+  height: 60px;
+  & a,
+  & a:link,
+  & a:visited {
+    text-decoration: none;
+    color: $header-text-color;
   }
-
-  border-left: 1px solid #000.3;
-
-  transition: left .3s ease-out;
-
-  .sg-handle {
-    @mixin default-font;
-    position: absolute;
-    top: 220px;
-    left: -30px;
-
-    width: 150px;
-    height: 30px;
-    padding: 5px 10px;
-
-    cursor: pointer;
-    text-align: center;
-
-    color: #000.4;
-    border-top: 1px solid #000.3;
-    border-right: 1px solid #000.3;
-    border-left: 1px solid #000.3;
-    border-radius: 3px 3px 0 0;
-    background: #fff;
-
-    transition: left .3s ease-out;
-    transition-delay: .3s;
-    transform: rotate(-90deg);
-    transform-origin: left top;
-  }
-
-  .close {
-    position: absolute;
-    top: 0;
-    right: 0;
-
-    padding: 10px;
-  }
-
-  &.sg-hidden {
-    left: 100%;
-  }
-
-  &.sg-visible {
-    left: calc(100% - $designer-tool-width);
-    @media (--mobile) {
-      left: calc(100% - $designer-tool-width-mobile);
-    }
-
-    .sg-handle {
-      left: 0;
-    }
-  }
-
-  .sg-info-text {
-    margin-top: 10px;
+  a:hover,
+  a:active {
+    color: $primary-action-color;
   }
 }
 
-.sg.sg-design-content {
-  @mixin default-font;
+.sg.navigation {
+  padding: 0 $default-margin;
+  height: 60px;
   position: relative;
-  z-index: 9000;
+}
 
-  overflow-x: auto;
+.sg.toggle-menu {
+  display: inline-block;
+  position: absolute;
+  z-index: 100;
+  top: 19px;
+  right: 20px;
+  cursor: pointer;
+  i.fa.sg {
+    font-size: 22px;
+  }
+}
+
+.sg.toggle-menu:hover {
+  color: $primary-action-color;
+}
+
+.sg.logo {
+  @extend %fonts;
+  float: left;
+  margin-top: 16px;
+  margin-right: 2em;
+  font-weight: 300;
+  cursor: pointer;
+}
+
+/* Navigation */
+.sg.menu {
+  position: absolute;
+  width: 300px;
+  background: $nav-background-color;
+  top: 0;
+  bottom: 0;
+  right: -300px;
+  box-shadow: inset -1.5em 0 1.5em -0.75em rgba(0, 0, 0, 0.25);
+  z-index: 10;
   overflow-y: auto;
-
-  width: 100%;
-  height: 100%;
-  padding: 1em;
-
-  background: white;
-
+  -webkit-transition: -webkit-transform 0.5s;
+  transition: transform 0.5s;
+  padding-top: 60px;
+  user-select: none;
+  &.show {
+    transform: translateX(-300px);
+  }
+  li {
+    list-style: none;
+    padding: 0;
+  }
+  > ul {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    height: calc(100% - 60px);
+    > li {
+      -webkit-box-flex: 0;
+      -webkit-flex: 0 0 auto;
+      -ms-flex: 0 0 auto;
+      flex: 0 0 auto;
+      &.sg.toc-nav {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        overflow-y: auto;
+      }
+    }
+  }
   ul {
     margin: 0;
     padding: 0;
-    list-style: none;
-  }
-
-  label {
-    display: block;
-
-    i.fa {
-      padding-left: 8px;
-      color: red;
-    }
-
-    a {
-      i.fa.fa-eye {
-        font-size: 16px;
-        padding-left: 4px;
-        color: var(--primary-color);
-        color: $primary-color.2;
-        transition: all .4s ease-out;
-      }
-
-      &:hover {
-        i.fa.fa-eye {
-          color: $primary-color.8;
-        }
-      }
-    }
-
-    .sg-variable-source {
-      display: block;
-      opacity: 0.5;
-      font-size: 80%;
-    }
-
-  }
-
-  input {
-    display: inline;
-  }
-
-  input[type='text'] {
-    box-sizing: border-box;
-    width: 100%;
-  }
-
-  input[type='color'] {
-    background: transparent;
-    position: absolute;
-    right: 0;
-
-    box-sizing: border-box;
-    width: 36px;
-    height: 36px;
-    padding: 0;
-
-    cursor: pointer;
-
-    border: none;
   }
 }
 
-/*
-Action footer
-
-markup:
-  <div class="sg action-footer">
-    <button class="sg button sg-primary">Primary action</button>
-    <button class="sg button sg-secondary">Secondary action</button>
-  </div>
-
-Styleguide 4.2
-*/
-
-.sg.sg-action-footer {
-  margin-top: 16px;
-  margin-bottom: 16px;
-  padding-top: 8px;
-
-  border-top: 1px solid var(--secondary-color);
-  border-top: 1px solid $secondary-color;
+.sg.menu a:hover {
+  span.sg {
+    color: $primary-action-color;
+  }
 }
 
-
-/*
-Progress bar
-
-markup:
-<div id="ngProgress" style="width: 70%; opacity: 1;"></div>
-
-Styleguide 4.3
- */
-
-#ngProgress {
-  z-index: 99998;
-
-  height: 4px;
-  margin: 0;
-  padding: 0;
-  /* Add CSS3 styles for transition smoothing */
-
-  -webkit-transition: all .5s ease-in-out;
-     -moz-transition: all .5s ease-in-out;
-       -o-transition: all .5s ease-in-out;
-          transition: all .5s ease-in-out;
-
-  opacity: 0;
-  color: var(--primary-action-color);
-  color: $primary-action-color;
-  background-color: $primary-action-color;
-  box-shadow: 0 0 3px 0; /* Inherits the font color */
+.sg.menu a {
+  @include reset-link;
+  @extend %fonts;
+  font-size: 1em;
+  line-height: 1.5;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  padding-right: 24px;
+  span.sg {
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+  }
 }
 
-#ngProgress-container {
-  position: fixed;
-  z-index: 99999;
-  top: 0;
-  right: 0;
+/* Side menu toggle button */
+/* Navigation active styles */
+li.sg.active {
+  > a.sg > span.sg,
+  > .sg.heading > span.sg {
+    font-weight: 500;
+    color: $primary-action-color !important;
+  }
+}
+
+/* Navigation level 1 element styles */
+.sg.nav > li > a {
+  @extend %nav-item-1;
+}
+
+.sg.nav li.sg.nav-title {
+  @extend %nav-item-1;
+  font-weight: 500;
+}
+
+/* Navigation level 2 element styles */
+.sg.nav > li li a {
+  @extend %nav-item-2;
+}
+
+/* Navigation level 3 element styles */
+.sg.nav > li li li a {
+  @extend %nav-item-3;
+}
+
+/* Navigation level 4 element styles */
+.sg.nav > li li li li a {
+  @extend %nav-item-4;
+}
+
+/* Navigation level 5 element styles */
+.sg.nav ul ul ul ul li a {
+  @extend %nav-item-5;
+}
+
+/* Animations */
+.sg.ng-enter,
+.sg.ng-leave {
+  position: absolute;
   left: 0;
-
-  margin: 0;
-  padding: 0;
-}
-
-/*
-Socket disconnection icon
-
-markup:
-<div class="sg disconnection-icon" title="no socket connection">
-  <i class="fa fa-chain-broken"></i>
-</div>
-
-Styleguide 4.4
-*/
-
-.sg#socketDisconnection {
-  position: fixed;
-  z-index: 9100;
-  top: 0;
-  right: calc(var(--designer-tool-width) + 2)%;
-  right: calc($designer-tool-width + 2%);
-
-  transition: top .2s ease-in;
-}
-
-.sg#socketDisconnection.ng-hide {
-  top: -60px;
-}
-
-.sg-navigation-section {
-  padding: 10px;
-  position: fixed;
-  z-index: 99999;
   right: 0;
-  @if $navigation-arrows-visible == true {
-    display: inline;
-  } @else {
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+
+.sg.ng-enter {
+  opacity: 0;
+  -webkit-transform: scale(0.98);
+  -ms-transform: scale(0.98);
+  transform: scale(0.98);
+}
+
+.sg.ng-enter-active {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+}
+
+.sg.ng-leave {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  -ms-transform: scale(1);
+  transform: scale(1);
+}
+
+.sg.ng-leave-active {
+  opacity: 0;
+  -webkit-transform: scale(0.98);
+  -ms-transform: scale(0.98);
+  transform: scale(0.98);
+}
+
+/* Content styles */
+.sg.body section {
+  min-height: calc(100vh - 300px);
+}
+
+.sg.body section > h1:first-child {
+  margin-top: 0;
+  padding-top: $default-margin / 2;
+}
+
+.sg.body section > h2:first-child {
+  margin-top: 0;
+  padding-top: $default-margin / 2;
+}
+
+.sg.body section > h3:first-child {
+  margin-top: 0;
+  padding-top: $default-margin / 2;
+}
+
+.sg.container {
+  padding: 0 $default-margin;
+  max-width: 68em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Styleguide sections */
+section.sg.sg-section {
+  padding: 1em 0 2em;
+}
+
+.sg-partial {
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+  min-height: 220px;
+  &.sg-section:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.sg.sg-section + .sg.sg-section {
+  margin-top: 30px;
+}
+
+.sg-partial .sg.section-modifier {
+  /* Modifier styles */
+  position: relative;
+  padding: $section-modifier-padding;
+  background: white;
+  border: 1px solid;
+  border-color: $secondary-color;
+  border-bottom-width: 0;
+  &:last-child {
+    border-bottom-width: 1px;
+  }
+  &:first-child {
+    border-radius: 5px 5px 0 0;
+  }
+  &:last-child {
+    margin-bottom: 0;
+    border-radius: 0 0 5px 5px;
+  }
+  &:only-child {
+    border-radius: 5px;
+  }
+  & + .sg.section-partial {
+    border-radius: 0 0 5px 5px;
+  }
+}
+
+/* Titles and headings */
+h1.sg.section-main-heading {
+  padding-bottom: 0.5em;
+  border-bottom: 3px solid $primary-color;
+  margin: 30px 0;
+}
+
+h2.sg.section-sub-heading {
+  border-bottom: 1px solid $secondary-color;
+  margin: 30px 0;
+  margin-top: 80px;
+  padding-bottom: 0.5em;
+}
+
+.sg.side-nav-toggle {
+  padding: 0.7em $default-margin;
+  padding-right: 10em;
+  cursor: pointer;
+  -webkit-transition: background 0.3s ease;
+  transition: background 0.3s ease;
+  &:before {
+    position: absolute;
+    margin-top: 3px;
+    display: inline-block;
+    margin-right: 0.2em;
+    -webkit-transition: -webkit-transform 0.3s ease-out;
+    transition: transform 0.3s ease-out;
+    color: rgba(130, 130, 130, 0.4);
+    font-size: 0.8em;
+  }
+}
+
+.sg.reference-number {
+  display: none;
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  width: auto;
+  padding: 0.2em 0.5em;
+  border-radius: 3px;
+  background: $reference-number-background-color;
+  color: $reference-number-text-color;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 0.65em;
+  font-weight: 500;
+  letter-spacing: 1px;
+  line-height: 1.5;
+  .sg.show-reference-number & {
+    display: block;
+  }
+}
+
+.sg.section-partial {
+  background-color: darken($tertiary-color, 10%);
+  padding: $section-padding;
+  border: 1px solid $secondary-color;
+  border-top-width: 0;
+  position: relative;
+  z-index: 1;
+  border-radius: 0 0 5px 5px;
+  margin-bottom: 30px;
+}
+
+.sg.section-partial .sg.code-listing {
+  background: white;
+  border: 1px solid $secondary-color;
+  border-radius: 3px;
+  padding: 5px;
+  position: relative;
+  code,
+  pre {
+    background: transparent;
+    padding: 0;
+    border: none;
+    font-size: 0.9em;
+  }
+}
+
+.sg.section-partial .sg.code-toggle {
+  border-bottom: 2px dashed;
+  display: inline-block;
+  text-align: center;
+  margin-bottom: 0;
+  color: #237794;
+  line-height: 1;
+  position: absolute;
+  right: 22px;
+  bottom: -18px;
+  padding: 4px 16px 4px;
+  border-radius: 0 0 3px 3px;
+  background: rgba($tertiary-color, 0.5);
+  font-weight: 500;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  &:hover {
+    color: darken($tertiary-color, 30);
+  }
+  &:after {
+    content: '\f078';
+    margin-left: 0.5em;
+    font-family: FontAwesome;
+    font-size: 9px;
+  }
+  &.sg.active:after {
+    content: '\f077';
+    margin-left: 0.5em;
+    font-family: FontAwesome;
+    font-size: 9px;
+  }
+}
+
+.sg.section .sg.reference-url {
+  display: none;
+  margin-bottom: 10px;
+  input.sg {
+    background: transparent;
+    border: 1px dashed;
+    font-size: 16px;
+    width: 100%;
+    padding: 4px;
+  }
+}
+
+.sg.code-listing-wrapper {
+  max-height: 0;
+  overflow: hidden;
+  margin-bottom: 0 !important;
+  -webkit-transition: max-height 0.4s, margin-bottom 0.1s;
+  transition: max-height 0.4s, margin-bottom 0.1s;
+  &.sg.active {
+    max-height: 5000px;
+    margin-bottom: 30px !important;
+    .sg + .sg {
+      margin-top: 15px;
+    }
+    .sg.code-listing {
+      overflow: auto;
+    }
+  }
+}
+
+/* Variable sections */
+.sg.variable-section {
+  @extend %section;
+}
+
+/* Design manual content */
+.sg.design-manual-body {
+  margin: 0 auto;
+  padding: 0 $default-margin;
+  max-width: 48em;
+}
+
+.sg.design-manual-body .sg.heading {
+  margin-bottom: 0.5em;
+}
+
+/* Code listings */
+.sg.code-listing .sg.label {
+  background: $secondary-color;
+  color: #fff;
+  padding: 3px 10px;
+  font-size: 12px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 2px 0 2px 0;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Colors and typography */
+.styleguide-color {
+  width: 100%;
+  font-weight: 100;
+  font-size: 2em;
+  font-family: 'Fira Sans';
+  padding: 30px;
+  background: $primary-color;
+  text-align: center;
+}
+
+/* Search */
+.sg-search {
+  width: 100%;
+  padding: $default-margin / 2 $default-margin;
+  &:focus {
+    background: white;
+  }
+}
+
+.sg.search {
+  position: relative;
+  input.sg-search {
+    width: 100%;
+    padding: 0.5em;
+    padding-left: 2.5em;
+    border: 1px solid $default-action-color;
+    border-radius: 16px;
+    font-size: 1.1em;
+    font-weight: 300;
+  }
+  .sg.search-icon {
+    position: absolute;
+    top: 13px;
+    left: 16px;
+    font-size: 1.1em;
+  }
+}
+
+/* Designer tool */
+.sg.toggle {
+  position: absolute;
+  right: 10px;
+  margin-top: 26px;
+  font-size: 14px;
+  font-weight: 100;
+  color: $secondary-color;
+  cursor: pointer;
+  z-index: 8000;
+  transition: 0.4s ease color;
+  &:hover {
+    color: $primary-color;
+  }
+}
+
+/* Variables */
+.sg.design-content {
+  display: none;
+  position: relative;
+  &.sg.show {
+    display: block;
+  }
+}
+
+.sg.variable-wrapper {
+  @extend %variable-box;
+  .sg.variable-name {
+    @extend %variable-heading;
+  }
+}
+
+.sg.variable-wrapper .sg.value,
+.sg.section-modifier .sg.modifier-name {
+  padding: 8px 8px;
+  background: $variable-field-bg;
+  box-shadow: inset 1px 1px 0 $variable-field-border, inset -1px -1px 0 $variable-field-border;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: #888;
+  margin-left: auto;
+  position: relative;
+  &:hover:before {
     display: none;
   }
-  .next-nav, .prev-nav {
+  &:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 40px;
+    content: "";
+    background: linear-gradient(to right, rgba(#f7f8fa, 0), #f7f8fa 75%);
+  }
+}
+
+.sg.section-modifier {
+  .sg.section-modifier__info {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 16px;
+    padding-right: 0;
+    background: rgba(246, 248, 250, 0.9);
+  }
+  .sg.section-modifier__title {
+    @extend %section-modifier-name;
+  }
+}
+
+/* Sections navigation */
+$selected-nav-bg: $nav-background-color;
+.sg.sections-nav {
+  background: $selected-nav-bg;
+  width: 100%;
+  margin: 0;
+  li.sg {
+    list-style: none;
     float: left;
+    margin-right: 2px;
+  }
+  li.sg:last-child {
+    margin-right: 0;
+  }
+  a {
+    @include reset-link;
+    display: block;
+    padding: 13px 20px 11px;
+    background: rgba(#000, 0.1);
+    color: rgba(#000, 0.4);
+    &:hover {
+      background: none;
+      color: rgba(#000, 0.9);
+    }
+  }
+  .sg.active a {
+    background: white;
+    color: $primary-color;
+  }
+}
+
+/* Clearfix */
+.sg.sections-nav:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: ' ';
+  clear: both;
+  height: 0;
+}
+
+/* Sections blocks */
+.sg.block-section {
+  @extend %section;
+  &.sg.is-collapsed {
+    .sg.body,
+    .sg.design-content {
+      display: none;
+    }
+  }
+}
+
+.sg.block-section .sg.title {
+  font-family: $secondary-font;
+  @extend %section-heading;
+  -webkit-transition: background 0.3s ease;
+  transition: background 0.3s ease;
+  &:hover {
+    background: darken($section-background-color, 3%);
     cursor: pointer;
   }
-  .sg-navigation-link,
-  .sg-navigation-link:link,
-  .sg-navigation-link:visited
-  {
-    color: $default-action-color;
+  &:before {
+    @extend .fa;
+    content: '\f0d7';
+    position: absolute;
+    left: $default-margin;
+    margin-top: 2px;
+    -webkit-transition: -webkit-transform 0.3s ease-out;
+    transition: transform 0.3s ease-out;
+    color: rgba(130, 130, 130, 0.2);
+    font-size: 14px;
+  }
+  &.sg.collapsed:before {
+    -webkit-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+  }
+}
+
+/* Modifier box */
+.sg.modifiers-content-wrapper {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: stretch;
+  -webkit-align-items: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  min-height: 50px;
+  position: relative;
+  .sg.modifier-description {
+    padding: 20px;
+    background: rgba(#000, 0.05);
+    box-shadow: inset -2px 0 0 rgba(#000, 0.05);
+    font-size: 12px;
+    line-height: 1.8;
+    color: #888;
+    width: 300px;
+    box-sizing: border-box;
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 300px;
+    -ms-flex: 0 0 300px;
+    flex: 0 0 300px;
+    p {
+      margin: 0;
+    }
+  }
+  .sg.modifiers-content {
+    position: relative;
+    z-index: 2;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+  }
+}
+
+@media (max-width: 1200px) {
+  .sg.modifiers-content-wrapper {
+    -webkit-flex-wrap: wrap;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    .sg.modifier-description {
+      width: 100%;
+      -webkit-box-flex: 1;
+      -webkit-flex: 1 1 100%;
+      -ms-flex: 1 1 100%;
+      flex: 1 1 100%;
+    }
+  }
+}
+
+/* KSS markup */
+.sg.modifier-markup {
+  margin: 10px 0 0 0;
+  .sg.label {
+    @extend %markup-box-modifier-label;
+  }
+  pre {
+    @extend %markup-box;
+  }
+}
+
+/* Variable listing */
+.sg.variable-listing {
+  @extend %variable-listing;
+  margin-bottom: 2em;
+}
+
+.sg.variable-listing .sg.variable-item {
+  margin-bottom: 3em;
+}
+
+.sg.variable-listing label {
+  @extend %variable-listing-label;
+}
+
+.sg.color-preview {
+  width: 100px;
+  height: 50px;
+  margin-top: 5px;
+  float: left;
+  margin-right: 15px;
+  background-color: #fff;
+  background-image: linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%, #eee), linear-gradient(45deg, #eee 25%, transparent 25%, transparent 75%, #eee 75%, #eee);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 8px;
+  box-shadow: 0 0 1px #000;
+  position: relative;
+  &:before {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: "";
+    box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+  }
+  .sg.color {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: relative;
+    z-index: 0;
+  }
+}
+
+.sg.variable-listing input,
+.sg.variable-listing color-picker,
+.sg.colorpicker-input {
+  @extend %input;
+}
+
+.sg.variable-listing input {
+  width: 100%;
+}
+
+/* Progress bar */
+.sg.progress {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  height: 3px;
+  width: 100%;
+  z-index: 10000;
+  display: none;
+  .sg.bar {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: $primary-action-color;
+    width: 3%;
+    -webkit-transition: none;
+    transition: none;
+  }
+  &.sg.start {
+    display: block;
+  }
+  &.sg.start .sg.bar {
+    width: 15%;
+    -webkit-transition: width 5s ease-out;
+    transition: width 5s ease-out;
+  }
+  &.sg.end .sg.bar {
+    width: 100%;
+    -webkit-transition: width 0.3s ease-out;
+    transition: width 0.3s ease-out;
+  }
+}
+
+/* Error handler */
+#sg-error {
+  background: red;
+  color: white;
+  padding: 62px 20px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 99999;
+  h1 {
+    @extend %error-heading;
+  }
+  .sg.close {
+    @extend %error-close;
+  }
+  pre {
+    @extend %error-pre;
+  }
+}
+
+/* Designer tool contents */
+.sg.user-styles {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sg.user-styles .sg.checkbox input {
+  display: inline;
+  width: inherit;
+  margin: 0 8px 0 0;
+  display: inline-block;
+  line-height: 10px;
+  position: relative;
+  top: -2px;
+}
+
+/* Footer */
+/* Main footer */
+.sg.footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  background: #333;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  font-weight: 200;
+  z-index: 8000;
+  a {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 400;
     text-decoration: none;
+    &:hover {
+      color: rgba(255, 255, 255, 1);
+      text-decoration: underline;
+    }
+  }
+  .sg.content {
+    padding: $footer-padding;
+    padding-bottom: $footer-logo-height;
+    text-align: center;
+  }
+  .sg.logo {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 42px;
+    height: 42px;
+    opacity: 0.5;
+    -webkit-transition: opacity 0.3s ease-out;
+    transition: opacity 0.3s ease-out;
+    &:hover {
+      opacity: 0.8;
+    }
   }
 }
 
-.sg.disconnection-icon {
-  line-height: 32px;
-
-  width: 32px;
-  height: 32px;
-  padding-top: 3px;
-
-  text-align: center;
-  vertical-align: middle;
-
-  color: #fff;
-  border-radius: 3px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  background-color: #d20000;
-  i.fa {
-    font-size: 20px;
-
-    animation: socket-disconnect-pulse 3s linear infinite;
-  }
+/* Helpers */
+.sg.correct,
+.sg.success {
+  background-color: lightgreen;
 }
 
-@keyframes socket-disconnect-pulse {
-  80% {
-    color: rgba(255, 255, 255, 1);
-  }
-  90% {
-    color: rgba(255, 255, 255, .35);
-  }
-  100% {
-    color: rgba(255, 255, 255, 1);
-  }
+.sg.wrong,
+.sg.error {
+  background-color: lightcoral;
 }
 
+.sg.modifier-name {
+  -webkit-transition: background-color ease-out 0.4s;
+  transition: background-color ease-out 0.4s;
+}
 
-/*
-Angular Directives
+/* Helper class to style Angular templates */
+.sg.demo-output-inner-wrapper {
+  padding: 20px;
+  border-radius: 5px;
+  background: white;
+  position: relative;
+}
 
-Example of lazy loaded AngularJS directive from external project
-
-Styleguide 6.0
- */
-
-/*
-Test directive
-
-markup:
-<div sg-test-directive>If you see this something is wrong</div>
-
-sg-angular-directive:
-name: sgAppTest
-file: demo/testDirectiveInit.js
-file: demo/testDirective.js
-
-Styleguide 6.1
- */
+.sg.demo-output-wrapper {
+  margin: 30px 0;
+  padding: 16px;
+  border: 1px solid #d4d4d4;
+  border-radius: 5px;
+  background-color: #f7f7f7;
+  position: relative;
+  .sg.section-title {
+    font-family: $secondary-font;
+    background: #fff;
+    display: inline-block;
+    padding: 5px 10px;
+    font-weight: 500;
+    top: -14px;
+    left: 20px;
+    position: absolute;
+    text-transform: uppercase;
+    font-size: 10px;
+    color: #999;
+    letter-spacing: 1px;
+  }
+  .sg.demo-output:after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.12);
+    content: "";
+    pointer-events: none;
+    border-radius: 3px;
+  }
+}
 
 .sg.demo-click-area {
   user-select: none;
@@ -1698,25 +1119,10 @@ Styleguide 6.1
   -ms-user-select: none;
   padding: 0.2em;
   border: 2px solid red;
+  display: inline;
   display: initial;
   cursor: pointer;
 }
 
-
-/*
-Test directive2
-
-markup:
-<div sg-test-directive-two>If you see this something is wrong</div>
-
-sg-angular-directive:
-name: sgAppTest
-file: demo/testDirectiveInit.js
-file: demo/testDirectiveTwo.js
-
-Styleguide 6.2
- */
- 
- /* styleguide:ignore:start */
-@mixin styleguide_custom_styles;
+/* styleguide:ignore:start */
 /* styleguide:ignore:end */
