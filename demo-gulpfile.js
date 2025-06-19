@@ -57,6 +57,7 @@ gulp.task('styleguide:applystyles', function() {
   return gulp.src('lib/app/css/styleguide-app.css')
     .pipe(postcss([
       require('postcss-import'),
+      require('postcss-mixins'), // Add mixins support for @define-mixin
       require('postcss-advanced-variables')({
         // 変数が見つからない場合はそのままにする
         unresolved: 'ignore',
