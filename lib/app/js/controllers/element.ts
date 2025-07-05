@@ -97,10 +97,16 @@ angular.module('sgApp')
       return false;
     }
 
-    function getSectionMarkup(section: Section): string {
+    function getSectionMarkup(section: Section | Modifier): string {
       const setModifierClassFilter = $filter<(input: string, modifierClass: string) => string>('setModifierClass');
       const setVariablesFilter = $filter<(input: string, variables: Variable[]) => string>('setVariables');
-      return setVariablesFilter(setModifierClassFilter(section.renderMarkup, section.className), $scope.variables);
+      
+      // ModifierはSectionのサブセットなので、必要なプロパティを持つオブジェクトとして扱う
+      const sectionLike = section as any;
+      const renderMarkup = sectionLike.renderMarkup || sectionLike.markup || '';
+      const className = sectionLike.className || '';
+      
+      return setVariablesFilter(setModifierClassFilter(renderMarkup, className), $scope.variables);
     }
 
     function updatePageData(): void {
@@ -159,10 +165,12 @@ angular.module('sgApp')
           });
         } else {
           // Select correct modifier element if one is defined
-          if (modifier) {
-            element = element.modifiers[parseInt(modifier) - 1];
+          if (modifier && element.modifiers && element.modifiers.length > 0) {
+            const modifierElement = element.modifiers[parseInt(modifier) - 1];
+            markup = getSectionMarkup(modifierElement);
+          } else {
+            markup = getSectionMarkup(element);
           }
-          markup = getSectionMarkup(element);
         }
 
         $scope.section = element;
