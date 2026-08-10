@@ -74,7 +74,7 @@
     "postcss-preset-env": "^10.4.0",
     "postcss-scss": "^4.0.9",
     "pug": "^3.0.3",
-    "q": "~1.4.1",
+    "q": "~1.5.1",
     "run-sequence": "^2.2.1",
     "socket.io": "^4.7.5",
     "through2": "~2.0.0",
