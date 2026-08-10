@@ -116,7 +116,7 @@
     "mocha": "^8.4.0",
     "proxyquire": "~1.7.3",
     "requirefrom": "~0.2.0",
-    "sinon": "~1.17.2",
+    "sinon": "~22.1.0",
     "sinon-chai": "~2.8.0",
     "typescript": "^5.8.3"
   },
