@@ -86,7 +86,7 @@
   "devDependencies": {
     "@babel/core": "^7.27.1",
     "@babel/preset-env": "^7.21.4",
-    "@babel/register": "^7.21.4",
+    "@babel/register": "^8.0.1",
     "@playwright/test": "^1.52.0",
     "@types/angular": "^1.8.9",
     "@types/angular-mocks": "^1.7.4",
