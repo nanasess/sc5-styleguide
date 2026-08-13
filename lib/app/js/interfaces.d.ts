@@ -30,6 +30,7 @@ interface IStyleguideService {
 
 interface IVariablesService {
   variables: Variable[];
+  socket?: any;
   get(callback?: Function): angular.IPromise<Variable[]>;
   getMaster(callback?: Function): angular.IPromise<Variable[]>;
   save(name: string): void;
@@ -38,6 +39,16 @@ interface IVariablesService {
   dirty(varName?: string): boolean;
   saveVariables(): void;
   resetLocal(): void;
+  variableMatches(var1: Variable, var2: Variable): boolean;
+  getLocalVar(variable: Variable): Variable | undefined;
+  getLocalIndex(variable: Variable): number | undefined;
+  getServerVar(variable: Variable): Variable | undefined;
+  refreshDirtyStates(): boolean;
+  refreshValues(): void;
+  setSocket(newSocket: any): IVariablesService;
+  addSocketListeners(): void;
+  getDirtyVariables(): Variable[];
+  init(socket: any): void;
 }
 
 interface IProgressService {
@@ -65,6 +76,7 @@ interface Hljs {
   configure(options: any): void;
   listLanguages(): string[];
   highlightAuto(code: string, languageSubset?: string[]): any;
+  registerLanguage(name: string, language: any): void;
 }
 
 declare var hljs: Hljs;
